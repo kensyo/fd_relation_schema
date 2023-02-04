@@ -19,6 +19,7 @@
     "3NF_SYNTHESIS": "https://github.com/kensyo/3NF_SYNTHESIS"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack --watch"
   }
 }
