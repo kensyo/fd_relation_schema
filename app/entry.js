@@ -1,60 +1,65 @@
 'use strict'
 
-import FDRS from '3NF_SYNTHESIS'
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App.js";
+ReactDOM.render(<App />, document.getElementById("root"));
 
-const FdRelationScheme = FDRS.FdRelationScheme
+// import FDRS from '3NF_SYNTHESIS'
 
-const relation_name_input = document.getElementById('relation_name')
-const relation_attributes_input = document.getElementById('relation_attributes')
-const relation_fds_input = document.getElementById('relation_fds')
+// const FdRelationScheme = FDRS.FdRelationScheme
 
-const what_to_do_select = document.getElementById('what_to_do')
+// const relation_name_input = document.getElementById('relation_name')
+// const relation_attributes_input = document.getElementById('relation_attributes')
+// const relation_fds_input = document.getElementById('relation_fds')
 
-const do_button = document.getElementById('do')
-const result_div = document.getElementById('result')
+// const what_to_do_select = document.getElementById('what_to_do')
 
-do_button.onclick = () => {
-  const scheme = create_relation_scheme()
+// const do_button = document.getElementById('do')
+// const result_div = document.getElementById('result')
 
-  const what_to_do = what_to_do_select.value
+// do_button.onclick = () => {
+//   const scheme = create_relation_scheme()
 
-  console.log(what_to_do)
+//   const what_to_do = what_to_do_select.value
 
-  switch (what_to_do) {
-    case 'synthesize':
-      const decomposed_schemes = FDRS.synthesize_into_3NF(scheme)
-      for (const decomposed_scheme of decomposed_schemes) {
-        console.log(decomposed_scheme)
-      }
-      break;
+//   console.log(what_to_do)
 
-    case 'check_normality':
-      console.log("BCNF?: " + scheme.is_in_BCNF())
-      break;
+//   switch (what_to_do) {
+//     case 'synthesize':
+//       const decomposed_schemes = FDRS.synthesize_into_3NF(scheme)
+//       for (const decomposed_scheme of decomposed_schemes) {
+//         console.log(decomposed_scheme)
+//       }
+//       break;
 
-    default:
-      console.log('hofffffge')
-      break;
-  }
-}
+//     case 'check_normality':
+//       console.log("BCNF?: " + scheme.is_in_BCNF())
+//       break;
 
-function create_relation_scheme() {
-  const raw_relation_name = relation_name_input.value
-  const raw_relation_attributes = relation_attributes_input.value
-  const raw_relation_fds = relation_fds_input.value
+//     default:
+//       console.log('hofffffge')
+//       break;
+//   }
+// }
 
-  const relation_name = raw_relation_name.trim()
-  const relation_attributes = raw_relation_attributes.split(',').map(str => str.trim())
-  // TODO: raw_relation_fds から抽出する
-  const relation_fds = [
-    [relation_attributes, relation_attributes]
-  ]
+// function create_relation_scheme() {
+//   const raw_relation_name = relation_name_input.value
+//   const raw_relation_attributes = relation_attributes_input.value
+//   const raw_relation_fds = relation_fds_input.value
 
-  const scheme = new FdRelationScheme(
-    relation_name,
-    relation_attributes,
-    relation_fds
-  )
+//   const relation_name = raw_relation_name.trim()
+//   const relation_attributes = raw_relation_attributes.split(',').map(str => str.trim())
+//   // TODO: raw_relation_fds から抽出する
+//   const relation_fds = [
+//     [relation_attributes, relation_attributes]
+//   ]
 
-  return scheme
-}
+//   const scheme = new FdRelationScheme(
+//     relation_name,
+//     relation_attributes,
+//     relation_fds
+//   )
+
+//   return scheme
+// }
