@@ -4,7 +4,7 @@
 
 "3NF_SYNTHESIS@https://github.com/kensyo/3NF_SYNTHESIS":
   version "1.0.0"
-  resolved "https://github.com/kensyo/3NF_SYNTHESIS#f753789f1ae2555f21e141c31f28c9ea4d185819"
+  resolved "https://github.com/kensyo/3NF_SYNTHESIS#d0029b44cf26060b2beec0634fd8669cc014e179"
 
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
