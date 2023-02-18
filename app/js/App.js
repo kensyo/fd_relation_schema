@@ -8,15 +8,23 @@ const FdRelationScheme = FDRS.FdRelationScheme
 
 const name_state_name = "name_input"
 const attributes_state_name = "attributes_input"
+const FDs_state_name = "FDs"
 
 class Info extends Component {
   constructor(props) {
     super(props)
     this.state = {
       [name_state_name]: "",
-      [attributes_state_name]: ""
+      [attributes_state_name]: "",
+      [FDs_state_name]: [
+        [[], []]
+      ]
     }
     this.handleChange = this.handleInputChange.bind(this)
+  }
+
+  get_attributes() {
+    return Array.from(new Set(this.state[attributes_state_name].split(',').map(x => x.trim()).filter(x => x)))
   }
 
   handleInputChange(state_name, event) {
@@ -25,8 +33,24 @@ class Info extends Component {
     })
   }
 
+  handleLeftSelectChange(num, event) {
+    const new_FDs = this.state[FDs_state_name]
+    new_FDs[num][0] = event
+    this.setState({
+      [FDs_state_name]: new_FDs
+    })
+  }
+
+  handleRightSelectChange(num, event) {
+    const new_FDs = this.state[FDs_state_name]
+    new_FDs[num][1] = event
+    this.setState({
+      [FDs_state_name]: new_FDs
+    })
+  }
+
   render() {
-    const attributes = Array.from(new Set(this.state[attributes_state_name].split(',').map(x => x.trim()).filter(x => x)))
+    const attributes = this.get_attributes()
     const options = attributes.map(attr => {
       return { value: attr, label: attr }
     })
@@ -47,7 +71,7 @@ class Info extends Component {
             className="relation_name"
             size="40"
             maxLength="50"
-            placeholder={should_put_placeholder ? "vegetables" : ""} />
+            placeholder={should_put_placeholder ? "example: vegetables" : ""} />
         </div>
         <div>
           <label>Attributes:</label>
@@ -63,12 +87,25 @@ class Info extends Component {
         </div>
         <div>
           <label>Functional Dependencies:</label>
-          <FD options={options} should_put_placeholder={should_put_placeholder}/>
+          {
+            this.state[FDs_state_name].map((fd, num) =>
+              <FD
+                key={num}
+                options={options}
+                should_put_placeholder={should_put_placeholder}
+                leftValue={fd[0]}
+                rightValue={fd[1]}
+                onLeftSelectChange={event => this.handleLeftSelectChange(num, event)}
+                onRightSelectChange={event => this.handleRightSelectChange(num, event)}
+              />
+            )
+          }
         </div>
       </div>
     )
   }
 }
+// <FD attributes={attributes} options={options} should_put_placeholder={should_put_placeholder} />
 
 class App extends Component {
   constructor(props) {

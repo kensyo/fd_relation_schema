@@ -1,23 +1,7 @@
 import React, { Component } from "react";
 import Select from "react-select";
 
-const lhs_state_name = "lhs"
-const rhs_state_name = "rhs"
-
 class FD extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      [lhs_state_name]: [],
-      [rhs_state_name]: []
-    }
-  }
-
-  handleSelectChange(which_side, event) {
-    this.setState({
-      [which_side]: event
-    })
-  }
 
   render() {
     const should_put_placeholder = this.props.should_put_placeholder
@@ -27,18 +11,18 @@ class FD extends Component {
         <Select
           isMulti
           className="lhs"
-          value={this.state.lhs}
+          value={this.props.leftValue}
           placeholder={should_put_placeholder ? "name, grower" : ""}
-          onChange={event => this.handleSelectChange(lhs_state_name, event)}
+          onChange={this.props.onLeftSelectChange}
           options={this.props.options}
         />
         ➞
         <Select
           isMulti
           className="rhs"
-          value={this.state.rhs}
+          value={this.props.rightValue}
           placeholder={should_put_placeholder ? "price" : ""}
-          onChange={event => this.handleSelectChange(rhs_state_name, event)}
+          onChange={this.props.onRightSelectChange}
           options={this.props.options}
         />
       </div>
