@@ -13,21 +13,23 @@ class FD extends Component {
     }
   }
 
-  handleChange(which_side, event) {
+  handleSelectChange(which_side, event) {
     this.setState({
       [which_side]: event
     })
   }
 
   render() {
+    const should_put_placeholder = this.props.should_put_placeholder
+
     return (
       <div className="FD" >
         <Select
           isMulti
           className="lhs"
           value={this.state.lhs}
-          placeholder="hoge"
-          onChange={event => this.handleChange(lhs_state_name, event)}
+          placeholder={should_put_placeholder ? "name, grower" : ""}
+          onChange={event => this.handleSelectChange(lhs_state_name, event)}
           options={this.props.options}
         />
         ➞
@@ -35,8 +37,8 @@ class FD extends Component {
           isMulti
           className="rhs"
           value={this.state.rhs}
-          placeholder="fuga"
-          onChange={event => this.handleChange(rhs_state_name, event)}
+          placeholder={should_put_placeholder ? "price" : ""}
+          onChange={event => this.handleSelectChange(rhs_state_name, event)}
           options={this.props.options}
         />
       </div>

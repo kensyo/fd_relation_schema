@@ -6,53 +6,64 @@ import FDRS from "3NF_SYNTHESIS"
 
 const FdRelationScheme = FDRS.FdRelationScheme
 
+const name_state_name = "name_input"
+const attributes_state_name = "attributes_input"
 
 class Info extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      attributes_text: ""
+      [name_state_name]: "",
+      [attributes_state_name]: ""
     }
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleInputChange.bind(this)
   }
 
-  handleChange(event) {
+  handleInputChange(state_name, event) {
     this.setState({
-      attributes_text: event.target.value,
+      [state_name]: event.target.value,
     })
   }
 
   render() {
-    const attributes = this.state.attributes_text.split(',').map(x => x.trim()).filter(x => x)
+    const attributes = Array.from(new Set(this.state[attributes_state_name].split(',').map(x => x.trim()).filter(x => x)))
     const options = attributes.map(attr => {
       return { value: attr, label: attr }
     })
+
+    const should_put_placeholder =
+      this.state[name_state_name] === "" &&
+      this.state[attributes_state_name] === ""
 
     return (
       <div>
         <p>Enter your scheme information.</p>
         <div>
           <label>Name:</label>
-          <input type="text" id="relation_name" size="40" maxLength="20" placeholder="vegetables" />
+          <input
+            value={this.state[name_state_name]}
+            onChange={event => this.handleInputChange(name_state_name, event)}
+            type="text"
+            className="relation_name"
+            size="40"
+            maxLength="50"
+            placeholder={should_put_placeholder ? "vegetables" : ""} />
         </div>
         <div>
           <label>Attributes:</label>
           <input
-            value={this.state.attributes_text}
-            onChange={this.handleChange}
+            value={this.state[attributes_state_name]}
+            onChange={event => this.handleInputChange(attributes_state_name, event)}
             type="text"
-            id="relation_attributes"
+            className="relation_attributes"
             size="40"
             maxLength="500"
-            placeholder="name,grower,growing_area,price"
+            placeholder={should_put_placeholder ? "name,grower,growing_area,price" : ""}
           />
         </div>
         <div>
           <label>Functional Dependencies:</label>
-          {
-            [1, 2, 3].map(
-              i => <FD key={i} options={options} />)
-          }
+          <FD options={options} should_put_placeholder={should_put_placeholder}/>
         </div>
       </div>
     )
