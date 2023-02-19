@@ -21,6 +21,7 @@ class Info extends Component {
       ]
     }
     this.handleChange = this.handleInputChange.bind(this)
+    this.handleButtonClick = this.handleButtonClick.bind(this)
   }
 
   get_attributes(str = this.state[attributes_state_name]) {
@@ -80,6 +81,14 @@ class Info extends Component {
     })
   }
 
+  handleButtonClick(num, event) {
+    const new_FDs = this.state[FDs_state_name].slice()
+    new_FDs.splice(num, 1)
+    this.setState({
+      [FDs_state_name]: new_FDs
+    })
+  }
+
   render() {
     const attributes = this.get_attributes()
     const options = attributes.map(attr => {
@@ -128,9 +137,20 @@ class Info extends Component {
                 rightValue={fd[1]}
                 onLeftSelectChange={event => this.handleLeftSelectChange(num, event)}
                 onRightSelectChange={event => this.handleRightSelectChange(num, event)}
+                onButtonClick={event => this.handleButtonClick(num, event)}
               />
             )
           }
+          <button onClick={(event) => {
+            const new_FDs = this.state[FDs_state_name].slice()
+            new_FDs.push([[], []])
+            this.setState({
+              [FDs_state_name]: new_FDs
+            })
+          }
+          }>
+            Add another FD
+          </button>
         </div>
       </div>
     )

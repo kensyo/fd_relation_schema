@@ -25,6 +25,9 @@ class FD extends Component {
           onChange={this.props.onRightSelectChange}
           options={this.props.options}
         />
+        <button onClick={this.props.onButtonClick}>
+          Remove
+        </button>
       </div>
     )
   }
