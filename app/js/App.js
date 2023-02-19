@@ -23,11 +23,42 @@ class Info extends Component {
     this.handleChange = this.handleInputChange.bind(this)
   }
 
-  get_attributes() {
-    return Array.from(new Set(this.state[attributes_state_name].split(',').map(x => x.trim()).filter(x => x)))
+  get_attributes(str = this.state[attributes_state_name]) {
+    return Array.from(new Set(str.split(',').map(x => x.trim()).filter(x => x)))
   }
 
   handleInputChange(state_name, event) {
+    if (state_name === attributes_state_name) {
+      const attributes = this.get_attributes(event.target.value)
+
+      const new_FDs = []
+      for (const fd of this.state[FDs_state_name]) {
+        const new_lhs = []
+        for (const elem of fd[0]) {
+          const value = elem.value
+          if (attributes.includes(value)) {
+            new_lhs.push(elem)
+          }
+        }
+
+        const new_rhs = []
+        for (const elem of fd[1]) {
+          const value = elem.value
+          if (attributes.includes(value)) {
+            new_rhs.push(elem)
+          }
+        }
+
+        new_FDs.push(
+          [new_lhs, new_rhs]
+        )
+
+      }
+      this.setState({
+        [FDs_state_name]: new_FDs
+      })
+    }
+
     this.setState({
       [state_name]: event.target.value,
     })
