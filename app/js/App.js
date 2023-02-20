@@ -6,7 +6,6 @@ import FDRS from "3NF_SYNTHESIS"
 
 const FdRelationScheme = FDRS.FdRelationScheme
 
-const name_state_name = "name_input"
 const attributes_state_name = "attributes_input"
 const FDs_state_name = "FDs"
 
@@ -22,7 +21,7 @@ class Info extends Component {
     })
 
     const should_put_placeholder =
-      this.props[name_state_name] === "" &&
+      this.props.nameInput === "" &&
       this.props[attributes_state_name] === ""
 
     return (
@@ -31,8 +30,8 @@ class Info extends Component {
         <div>
           <label>Name:</label>
           <input
-            value={this.props[name_state_name]}
-            onChange={event => this.props.handleInputChange(name_state_name, event)}
+            value={this.props.nameInput}
+            onChange={event => this.props.handleInputChange("nameInput", event)}
             type="text"
             className="relation_name"
             size="40"
@@ -81,7 +80,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      [name_state_name]: "",
+      nameInput: "",
       [attributes_state_name]: "",
       [FDs_state_name]: [
         [[], []]
@@ -172,7 +171,7 @@ class App extends Component {
       <div className="App">
         <h1>Normalize and investigate fd scheme</h1>
         <Info
-          name_input={this.state.name_input}
+          nameInput={this.state.nameInput}
           attributes_input={this.state.attributes_input}
           FDs={this.state.FDs}
           handleInputChange={this.handleInputChange}
