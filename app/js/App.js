@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Select from "react-select";
 import "../css/App.css";
 import FD from "./FD.js";
 
@@ -69,6 +70,39 @@ class Info extends Component {
           </button>
         </div>
       </div>
+    )
+  }
+}
+
+class Exec extends Component {
+  render() {
+    return (
+      <button
+        onClick={() => {
+          const name = this.props.nameInput
+          const attributes = getAttributes(this.props.attributesInput)
+          const FDs = []
+          for (const select of this.props.FDsSelect) {
+            const leftSelect = select[0]
+            const X = leftSelect.map(x => x.value)
+
+            const rightSelect = select[1]
+            const Y = rightSelect.map(x => x.value)
+
+            FDs.push([X, Y]) // adding X->Y to FDs
+          }
+
+          const scheme = new FdRelationScheme(
+            name,
+            attributes,
+            FDs
+          )
+
+          console.log(scheme)
+        }}
+      >
+        Do
+      </button>
     )
   }
 }
@@ -172,6 +206,11 @@ class App extends Component {
           handleRightSelectChange={this.handleRightSelectChange}
           handleRemoveButtonClick={this.handleRemoveButtonClick}
           handleAddButtonClick={this.handleAddButtonClick}
+        />
+        <Exec
+          nameInput={this.state.nameInput}
+          attributesInput={this.state.attributesInput}
+          FDsSelect={this.state.FDsSelect}
         />
       </div>
     );
