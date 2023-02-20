@@ -6,11 +6,10 @@ import FDRS from "3NF_SYNTHESIS"
 
 const FdRelationScheme = FDRS.FdRelationScheme
 
-const attributes_state_name = "attributes_input"
 const FDs_state_name = "FDs"
 
 class Info extends Component {
-  get_attributes(str = this.props[attributes_state_name]) {
+  get_attributes(str = this.props.attributesInput) {
     return Array.from(new Set(str.split(',').map(x => x.trim()).filter(x => x)))
   }
 
@@ -22,7 +21,7 @@ class Info extends Component {
 
     const should_put_placeholder =
       this.props.nameInput === "" &&
-      this.props[attributes_state_name] === ""
+      this.props.attributesInput === ""
 
     return (
       <div>
@@ -41,8 +40,8 @@ class Info extends Component {
         <div>
           <label>Attributes:</label>
           <input
-            value={this.props[attributes_state_name]}
-            onChange={event => this.props.handleInputChange(attributes_state_name, event)}
+            value={this.props.attributesInput}
+            onChange={event => this.props.handleInputChange("attributesInput", event)}
             type="text"
             className="relation_attributes"
             size="40"
@@ -81,7 +80,7 @@ class App extends Component {
     super(props)
     this.state = {
       nameInput: "",
-      [attributes_state_name]: "",
+      attributesInput: "",
       [FDs_state_name]: [
         [[], []]
       ]
@@ -93,12 +92,12 @@ class App extends Component {
     this.handleRightSelectChange = this.handleRightSelectChange.bind(this)
   }
 
-  get_attributes(str = this.state[attributes_state_name]) {
+  get_attributes(str = this.state.attributesInput) {
     return Array.from(new Set(str.split(',').map(x => x.trim()).filter(x => x)))
   }
 
   handleInputChange(state_name, event) {
-    if (state_name === attributes_state_name) {
+    if (state_name === "attributesInput") {
       const attributes = this.get_attributes(event.target.value)
 
       const new_FDs = []
@@ -172,7 +171,7 @@ class App extends Component {
         <h1>Normalize and investigate fd scheme</h1>
         <Info
           nameInput={this.state.nameInput}
-          attributes_input={this.state.attributes_input}
+          attributesInput={this.state.attributesInput}
           FDs={this.state.FDs}
           handleInputChange={this.handleInputChange}
           handleLeftSelectChange={this.handleLeftSelectChange}
