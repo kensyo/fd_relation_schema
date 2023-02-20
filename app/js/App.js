@@ -94,7 +94,7 @@ class App extends Component {
     if (state_name === "attributesInput") {
       const attributes = getAttributes(event.target.value)
 
-      const new_FDs = []
+      const newFDs = []
       for (const fd of this.state.FDsSelect) {
         const new_lhs = []
         for (const elem of fd[0]) {
@@ -112,13 +112,13 @@ class App extends Component {
           }
         }
 
-        new_FDs.push(
+        newFDs.push(
           [new_lhs, new_rhs]
         )
 
       }
       this.setState({
-        FDsSelect: new_FDs
+        FDsSelect: newFDs
       })
     }
 
@@ -128,34 +128,34 @@ class App extends Component {
   }
 
   handleLeftSelectChange(num, event) {
-    const new_FDs = this.state.FDsSelect
-    new_FDs[num][0] = event
+    const newFDs = this.state.FDsSelect
+    newFDs[num][0] = event
     this.setState({
-      FDsSelect: new_FDs
+      FDsSelect: newFDs
     })
   }
 
   handleRightSelectChange(num, event) {
-    const new_FDs = this.state.FDsSelect
-    new_FDs[num][1] = event
+    const newFDs = this.state.FDsSelect
+    newFDs[num][1] = event
     this.setState({
-      FDsSelect: new_FDs
+      FDsSelect: newFDs
     })
   }
 
   handleRemoveButtonClick(num, event) {
-    const new_FDs = this.state.FDsSelect.slice()
-    new_FDs.splice(num, 1)
+    const newFDs = this.state.FDsSelect.slice()
+    newFDs.splice(num, 1)
     this.setState({
-      FDsSelect: new_FDs
+      FDsSelect: newFDs
     })
   }
 
   handleAddButtonClick(event) {
-    const new_FDs = this.state.FDsSelect.slice()
-    new_FDs.push([[], []])
+    const newFDs = this.state.FDsSelect.slice()
+    newFDs.push([[], []])
     this.setState({
-      FDsSelect: new_FDs
+      FDsSelect: newFDs
     })
   }
 
