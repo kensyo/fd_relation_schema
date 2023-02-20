@@ -1,0 +1,41 @@
+.App {
+  margin: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* body { */
+/*   background-color: #04a6eb; */
+/*   color: #fdffff; */
+/*   width: 900px; */
+/*   margin-right: auto; */
+/*   /1* margin-left: auto; *1/ */
+/* } */
+
+/* button { */
+/*   padding: 5px 20px; */
+/*   background-color: #337ab7; */
+/*   border-style: none; */
+/* } */
+
+/* input { */
+/*   height: 20px; */
+/* } */
+
+/* select { */
+/* 	min-width: 300px; */
+/* } */
+
+.lhs {
+	width: 400px;
+	display: inline-block;
+}
+
+.rhs {
+	width: 400px;
+	display: inline-block;
+}
+
+.execSelect {
+	width: 400px;
+	display: inline-block;
+}
