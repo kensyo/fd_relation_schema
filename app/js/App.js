@@ -6,8 +6,6 @@ import FDRS from "3NF_SYNTHESIS"
 
 const FdRelationScheme = FDRS.FdRelationScheme
 
-const FDs_state_name = "FDs"
-
 class Info extends Component {
   get_attributes(str = this.props.attributesInput) {
     return Array.from(new Set(str.split(',').map(x => x.trim()).filter(x => x)))
@@ -52,7 +50,7 @@ class Info extends Component {
         <div>
           <label>Functional Dependencies:</label>
           {
-            this.props[FDs_state_name].map((fd, num) =>
+            this.props.FDsSelect.map((fd, num) =>
               <FD
                 key={num}
                 options={options}
@@ -81,7 +79,7 @@ class App extends Component {
     this.state = {
       nameInput: "",
       attributesInput: "",
-      [FDs_state_name]: [
+      FDsSelect: [
         [[], []]
       ]
     }
@@ -101,7 +99,7 @@ class App extends Component {
       const attributes = this.get_attributes(event.target.value)
 
       const new_FDs = []
-      for (const fd of this.state[FDs_state_name]) {
+      for (const fd of this.state.FDsSelect) {
         const new_lhs = []
         for (const elem of fd[0]) {
           const value = elem.value
@@ -124,7 +122,7 @@ class App extends Component {
 
       }
       this.setState({
-        [FDs_state_name]: new_FDs
+        FDsSelect: new_FDs
       })
     }
 
@@ -134,34 +132,34 @@ class App extends Component {
   }
 
   handleLeftSelectChange(num, event) {
-    const new_FDs = this.state[FDs_state_name]
+    const new_FDs = this.state.FDsSelect
     new_FDs[num][0] = event
     this.setState({
-      [FDs_state_name]: new_FDs
+      FDsSelect: new_FDs
     })
   }
 
   handleRightSelectChange(num, event) {
-    const new_FDs = this.state[FDs_state_name]
+    const new_FDs = this.state.FDsSelect
     new_FDs[num][1] = event
     this.setState({
-      [FDs_state_name]: new_FDs
+      FDsSelect: new_FDs
     })
   }
 
   handleButtonClick(num, event) {
-    const new_FDs = this.state[FDs_state_name].slice()
+    const new_FDs = this.state.FDsSelect.slice()
     new_FDs.splice(num, 1)
     this.setState({
-      [FDs_state_name]: new_FDs
+      FDsSelect: new_FDs
     })
   }
 
   handleAddButtonClick(event) {
-    const new_FDs = this.state[FDs_state_name].slice()
+    const new_FDs = this.state.FDsSelect.slice()
     new_FDs.push([[], []])
     this.setState({
-      [FDs_state_name]: new_FDs
+      FDsSelect: new_FDs
     })
   }
 
@@ -172,7 +170,7 @@ class App extends Component {
         <Info
           nameInput={this.state.nameInput}
           attributesInput={this.state.attributesInput}
-          FDs={this.state.FDs}
+          FDsSelect={this.state.FDsSelect}
           handleInputChange={this.handleInputChange}
           handleLeftSelectChange={this.handleLeftSelectChange}
           handleRightSelectChange={this.handleRightSelectChange}
