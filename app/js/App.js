@@ -8,7 +8,7 @@ import FDRS from "3NF_SYNTHESIS"
 const FdRelationScheme = FDRS.FdRelationScheme
 
 function getAttributes(str) {
-    return Array.from(new Set(str.split(',').map(x => x.trim()).filter(x => x)))
+  return Array.from(new Set(str.split(',').map(x => x.trim()).filter(x => x)))
 }
 
 class Info extends Component {
@@ -116,6 +116,7 @@ class App extends Component {
       FDsSelect: [
         [[], []]
       ]
+      // [[{ value: attr, label: attr }, ... ], [{ value: attr, label: attr }, ...]]
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleRemoveButtonClick = this.handleRemoveButtonClick.bind(this)
