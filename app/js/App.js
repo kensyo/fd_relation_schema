@@ -59,7 +59,7 @@ class Info extends Component {
                 rightValue={fd[1]}
                 onLeftSelectChange={event => this.props.handleLeftSelectChange(num, event)}
                 onRightSelectChange={event => this.props.handleRightSelectChange(num, event)}
-                onButtonClick={event => this.props.handleButtonClick(num, event)}
+                onButtonClick={event => this.props.handleRemoveButtonClick(num, event)}
               />
             )
           }
@@ -84,7 +84,7 @@ class App extends Component {
       ]
     }
     this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleButtonClick = this.handleButtonClick.bind(this)
+    this.handleRemoveButtonClick = this.handleRemoveButtonClick.bind(this)
     this.handleAddButtonClick = this.handleAddButtonClick.bind(this)
     this.handleLeftSelectChange = this.handleLeftSelectChange.bind(this)
     this.handleRightSelectChange = this.handleRightSelectChange.bind(this)
@@ -147,7 +147,7 @@ class App extends Component {
     })
   }
 
-  handleButtonClick(num, event) {
+  handleRemoveButtonClick(num, event) {
     const new_FDs = this.state.FDsSelect.slice()
     new_FDs.splice(num, 1)
     this.setState({
@@ -174,7 +174,7 @@ class App extends Component {
           handleInputChange={this.handleInputChange}
           handleLeftSelectChange={this.handleLeftSelectChange}
           handleRightSelectChange={this.handleRightSelectChange}
-          handleButtonClick={this.handleButtonClick}
+          handleRemoveButtonClick={this.handleRemoveButtonClick}
           handleAddButtonClick={this.handleAddButtonClick}
         />
       </div>
