@@ -6,13 +6,14 @@ import FDRS from "3NF_SYNTHESIS"
 
 const FdRelationScheme = FDRS.FdRelationScheme
 
-class Info extends Component {
-  get_attributes(str = this.props.attributesInput) {
+function getAttributes(str) {
     return Array.from(new Set(str.split(',').map(x => x.trim()).filter(x => x)))
-  }
+}
+
+class Info extends Component {
 
   render() {
-    const attributes = this.get_attributes()
+    const attributes = getAttributes(this.props.attributesInput)
     const options = attributes.map(attr => {
       return { value: attr, label: attr }
     })
@@ -89,13 +90,9 @@ class App extends Component {
     this.handleRightSelectChange = this.handleRightSelectChange.bind(this)
   }
 
-  get_attributes(str = this.state.attributesInput) {
-    return Array.from(new Set(str.split(',').map(x => x.trim()).filter(x => x)))
-  }
-
   handleInputChange(state_name, event) {
     if (state_name === "attributesInput") {
-      const attributes = this.get_attributes(event.target.value)
+      const attributes = getAttributes(event.target.value)
 
       const new_FDs = []
       for (const fd of this.state.FDsSelect) {
