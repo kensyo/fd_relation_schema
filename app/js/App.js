@@ -79,7 +79,7 @@ class Exec extends Component {
     super(props)
     this.state = {
       scheme: null,
-      selectValue: ""
+      selectValue: "",
     }
   }
 
@@ -88,17 +88,125 @@ class Exec extends Component {
     { value: "synthesize", label: "Decompose into 3NF by synthesis" },
   ]
 
+  renderSchemeInfo(scheme, showNormality = false) {
+    const FDStrings = Array.from(scheme.fds).map(fd => {
+      const array_fd = JSON.parse(fd)
+      const X = array_fd[0]
+      const Y = array_fd[1]
+
+      const stringifiedX = X.length === 0 ? "\u2205" : X.join(', ')
+      const stringifiedY = Y.length === 0 ? "\u2205" : Y.join(', ')
+
+      return (
+        <li key={stringifiedX + stringifiedY}>
+          {stringifiedX + ' ➞ ' + stringifiedY}
+        </li>
+      )
+    })
+
+    const diagnosis = scheme.diagnose_normality()
+
+    return (
+      <ul>
+        <li>Name: {scheme.name}</li>
+        <li>Attributes: {Array.from(scheme.attributes).join(', ')}</li>
+        <li>FDs:
+          <ul>
+            {FDStrings}
+          </ul>
+        </li>
+        {showNormality &&
+          <li>
+            Normality: {diagnosis.normality} {diagnosis.is_definite ? " with no higher order" : " or higer"}
+          </li>
+        }
+      </ul>
+    )
+    // const FDStrings = Array.from(scheme.fds).map(fd => {
+    //   const array_fd = JSON.parse(fd)
+    //   const X = array_fd[0]
+    //   const Y = array_fd[1]
+
+    //   const stringifiedX = X.join(',')
+    //   const stringifiedY = Y.join(',')
+
+    //   return (
+    //     <tr key={stringifiedX + stringifiedY}>
+    //       <td>{stringifiedX}</td><td>{'➞'}</td><td>{stringifiedY}</td>
+    //     </tr>
+    //   )
+    // })
+
+    // return (
+    //   <table>
+    //     <caption>SCHEME NAME: {scheme.name}</caption>
+    //     <thead>
+    //       <tr>
+    //         {Array.from(scheme.attributes).map(x => <th key={x}>{x}</th>)}
+    //       </tr>
+    //     </thead>
+    //     <tbody>
+    //       {FDStrings}
+    //     </tbody>
+    //   </table>
+    // )
+  }
+
+  renderResult() {
+    if (this.state.scheme === null) {
+      return <div className="result"></div>
+    }
+
+    const scheme = this.state.scheme
+
+    switch (this.state.selectValue.value) {
+      case "diagnose":
+        const diagnosis = this.state.scheme.diagnose_normality()
+        const prefix = diagnosis.is_definite ? "" : "at least"
+        const postfix = diagnosis.is_definite ? " and isn't in the normal form with higher order." : "."
+        const diagnosisString = `This is ${prefix} in ${diagnosis.normality}${postfix}`
+
+        return (
+          <div className="result">
+            {this.renderSchemeInfo(scheme)}
+            <p>{diagnosisString}</p>
+          </div>
+        )
+
+      case "synthesize":
+        const decomposition = FDRS.synthesize_into_3NF(scheme)
+
+        return (
+          <div className="result">
+            {this.renderSchemeInfo(scheme)}
+            <p>is decomposed into 3NF as follows:</p>
+            {
+              Array.from(decomposition).map(decomposedScheme => {
+                return (
+                  <div key={decomposedScheme.name}>
+                    {this.renderSchemeInfo(decomposedScheme, true)}
+                  </div>
+                )
+              })
+            }
+          </div>
+        )
+
+      default:
+        return <div className="result"></div>
+    }
+
+  }
+
   render() {
+
     return (
       <div>
         <Select
           className="execSelect"
           options={this.options}
           value={this.state.selectValue}
-          onChange={(event) => this.setState({ selectValue: event })}
-        />
-        <button
-          onClick={() => {
+          onChange={(event) => {
             const name = this.props.nameInput
             const attributes = getAttributes(this.props.attributesInput)
             const FDs = []
@@ -119,12 +227,12 @@ class Exec extends Component {
             )
 
             this.setState({
-              scheme: scheme
+              scheme: scheme,
+              selectValue: event
             })
           }}
-        >
-          Do
-        </button>
+        />
+        {this.renderResult()}
       </div>
     )
   }
