@@ -96,24 +96,24 @@ class App extends Component {
 
       const newFDs = []
       for (const fd of this.state.FDsSelect) {
-        const new_lhs = []
+        const newLHS = []
         for (const elem of fd[0]) {
           const value = elem.value
           if (attributes.includes(value)) {
-            new_lhs.push(elem)
+            newLHS.push(elem)
           }
         }
 
-        const new_rhs = []
+        const newRHS = []
         for (const elem of fd[1]) {
           const value = elem.value
           if (attributes.includes(value)) {
-            new_rhs.push(elem)
+            newRHS.push(elem)
           }
         }
 
         newFDs.push(
-          [new_lhs, new_rhs]
+          [newLHS, newRHS]
         )
 
       }
