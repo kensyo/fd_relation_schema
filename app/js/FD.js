@@ -4,7 +4,7 @@ import Select from "react-select";
 class FD extends Component {
 
   render() {
-    const should_put_placeholder = this.props.should_put_placeholder
+    const shouldPutPlaceholder = this.props.shouldPutPlaceholder
 
     return (
       <div className="FD" >
@@ -12,7 +12,7 @@ class FD extends Component {
           isMulti
           className="lhs"
           value={this.props.leftValue}
-          placeholder={should_put_placeholder ? "name, grower" : ""}
+          placeholder={shouldPutPlaceholder ? "name, grower" : ""}
           onChange={this.props.onLeftSelectChange}
           options={this.props.options}
         />
@@ -21,7 +21,7 @@ class FD extends Component {
           isMulti
           className="rhs"
           value={this.props.rightValue}
-          placeholder={should_put_placeholder ? "price" : ""}
+          placeholder={shouldPutPlaceholder ? "price" : ""}
           onChange={this.props.onRightSelectChange}
           options={this.props.options}
         />

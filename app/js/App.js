@@ -17,7 +17,7 @@ class Info extends Component {
       return { value: attr, label: attr }
     })
 
-    const should_put_placeholder =
+    const shouldPutPlaceholder =
       this.props.nameInput === "" &&
       this.props.attributesInput === ""
 
@@ -33,7 +33,7 @@ class Info extends Component {
             className="relation_name"
             size="40"
             maxLength="50"
-            placeholder={should_put_placeholder ? "example: vegetables" : ""} />
+            placeholder={shouldPutPlaceholder ? "example: vegetables" : ""} />
         </div>
         <div>
           <label>Attributes:</label>
@@ -44,7 +44,7 @@ class Info extends Component {
             className="relation_attributes"
             size="40"
             maxLength="500"
-            placeholder={should_put_placeholder ? "name,grower,growing_area,price" : ""}
+            placeholder={shouldPutPlaceholder ? "name,grower,growing_area,price" : ""}
           />
         </div>
         <div>
@@ -54,7 +54,7 @@ class Info extends Component {
               <FD
                 key={num}
                 options={options}
-                should_put_placeholder={should_put_placeholder}
+                shouldPutPlaceholder={shouldPutPlaceholder}
                 leftValue={fd[0]}
                 rightValue={fd[1]}
                 onLeftSelectChange={event => this.props.handleLeftSelectChange(num, event)}
@@ -71,7 +71,6 @@ class Info extends Component {
     )
   }
 }
-// <FD attributes={attributes} options={options} should_put_placeholder={should_put_placeholder} />
 
 class App extends Component {
   constructor(props) {
