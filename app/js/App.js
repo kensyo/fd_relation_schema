@@ -117,7 +117,7 @@ class Exec extends Component {
         </li>
         {showNormality &&
           <li>
-            Normality: {diagnosis.normality} {diagnosis.is_definite ? " with no higher order" : " or higer"}
+            Normality: {diagnosis.normality} {diagnosis.is_definite ? " with no higher order" : " or higher"}
           </li>
         }
       </ul>
