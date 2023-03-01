@@ -3,6 +3,8 @@ import Select from "react-select";
 import "../css/App.css";
 import FD from "./FD.js";
 
+import Button from '@mui/material/Button'
+
 import FDRS from "3NF_SYNTHESIS"
 
 const FdRelationScheme = FDRS.FdRelationScheme
@@ -25,6 +27,10 @@ class Info extends Component {
 
     return (
       <div>
+        <div>
+          <Button variant="contained">Hello World</Button>
+        </div>
+
         <p>Enter your scheme information.</p>
         <div>
           <label>Name:</label>
