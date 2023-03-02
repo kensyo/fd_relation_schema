@@ -4,6 +4,11 @@ import "../css/App.css";
 import FD from "./FD.js";
 
 import Button from '@mui/material/Button'
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+// import Link from '@mui/material/Link';
 
 import FDRS from "3NF_SYNTHESIS"
 
@@ -27,10 +32,6 @@ class Info extends Component {
 
     return (
       <div>
-        <div>
-          <Button variant="contained">Hello World</Button>
-        </div>
-
         <p>Enter your scheme information.</p>
         <div>
           <label>Name:</label>
@@ -55,26 +56,29 @@ class Info extends Component {
             placeholder={shouldPutPlaceholder ? "name,grower,growing_area,price" : ""}
           />
         </div>
-        <div>
+        <Box sx={{ flexGrow: 2 }}>
           <label>Functional Dependencies:</label>
-          {
-            this.props.FDsSelect.map((fd, num) =>
-              <FD
-                key={num}
-                options={options}
-                shouldPutPlaceholder={shouldPutPlaceholder}
-                leftValue={fd[0]}
-                rightValue={fd[1]}
-                onLeftSelectChange={event => this.props.handleLeftSelectChange(num, event)}
-                onRightSelectChange={event => this.props.handleRightSelectChange(num, event)}
-                onButtonClick={event => this.props.handleRemoveButtonClick(num, event)}
-              />
-            )
-          }
-          <button onClick={this.props.handleAddButtonClick}>
+          <Button variant="contained" onClick={this.props.handleAddButtonClick}>
             Add another FD
-          </button>
-        </div>
+          </Button>
+          <Grid container rowSpacing={1}>
+            {
+              this.props.FDsSelect.map((fd, num) =>
+                <Grid key={num} container item spacing={1} alignItems="Center">
+                  <FD
+                    options={options}
+                    shouldPutPlaceholder={shouldPutPlaceholder}
+                    leftValue={fd[0]}
+                    rightValue={fd[1]}
+                    onLeftSelectChange={event => this.props.handleLeftSelectChange(num, event)}
+                    onRightSelectChange={event => this.props.handleRightSelectChange(num, event)}
+                    onButtonClick={event => this.props.handleRemoveButtonClick(num, event)}
+                  />
+                </Grid>
+              )
+            }
+          </Grid>
+        </Box>
       </div>
     )
   }
@@ -305,24 +309,28 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <h1>Normalize and investigate fd scheme</h1>
-        <Info
-          nameInput={this.state.nameInput}
-          attributesInput={this.state.attributesInput}
-          FDsSelect={this.state.FDsSelect}
-          handleInputChange={this.handleInputChange}
-          handleLeftSelectChange={this.handleLeftSelectChange}
-          handleRightSelectChange={this.handleRightSelectChange}
-          handleRemoveButtonClick={this.handleRemoveButtonClick}
-          handleAddButtonClick={this.handleAddButtonClick}
-        />
-        <Exec
-          nameInput={this.state.nameInput}
-          attributesInput={this.state.attributesInput}
-          FDsSelect={this.state.FDsSelect}
-        />
-      </div>
+      <Container maxWidth="md">
+        <Box sx={{ my: 4 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Normalize and investigate fd scheme
+          </Typography>
+          <Info
+            nameInput={this.state.nameInput}
+            attributesInput={this.state.attributesInput}
+            FDsSelect={this.state.FDsSelect}
+            handleInputChange={this.handleInputChange}
+            handleLeftSelectChange={this.handleLeftSelectChange}
+            handleRightSelectChange={this.handleRightSelectChange}
+            handleRemoveButtonClick={this.handleRemoveButtonClick}
+            handleAddButtonClick={this.handleAddButtonClick}
+          />
+          <Exec
+            nameInput={this.state.nameInput}
+            attributesInput={this.state.attributesInput}
+            FDsSelect={this.state.FDsSelect}
+          />
+        </Box>
+      </Container>
     );
   }
 }
