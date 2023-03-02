@@ -7,6 +7,8 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 // import Link from '@mui/material/Link';
 
@@ -31,36 +33,27 @@ class Info extends Component {
       this.props.attributesInput === ""
 
     return (
-      <div>
-        <p>Enter your scheme information.</p>
-        <div>
-          <label>Name:</label>
-          <input
-            value={this.props.nameInput}
-            onChange={event => this.props.handleInputChange("nameInput", event)}
-            type="text"
-            className="relation_name"
-            size="40"
-            maxLength="50"
-            placeholder={shouldPutPlaceholder ? "example: vegetables" : ""} />
-        </div>
-        <div>
-          <label>Attributes:</label>
-          <input
-            value={this.props.attributesInput}
-            onChange={event => this.props.handleInputChange("attributesInput", event)}
-            type="text"
-            className="relation_attributes"
-            size="40"
-            maxLength="500"
-            placeholder={shouldPutPlaceholder ? "name,grower,growing_area,price" : ""}
-          />
-        </div>
+      <Stack spacing={2}>
+        <p> Enter your scheme information. </p>
+        <TextField
+          label="Name"
+          value={this.props.nameInput}
+          onChange={event => this.props.handleInputChange("nameInput", event)}
+          size="small"
+          placeholder={shouldPutPlaceholder ? "example: vegetables" : ""}
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          label="Attributes"
+          value={this.props.attributesInput}
+          onChange={event => this.props.handleInputChange("attributesInput", event)}
+          size="small"
+          placeholder={shouldPutPlaceholder ? "vegetable_name,grower,growing_area,price" : ""}
+          helperText="🍵 Enter each attribute separated by commas."
+          InputLabelProps={{ shrink: true }}
+        />
         <Box sx={{ flexGrow: 2 }}>
           <label>Functional Dependencies:</label>
-          <Button variant="contained" onClick={this.props.handleAddButtonClick}>
-            Add another FD
-          </Button>
           <Grid container rowSpacing={1}>
             {
               this.props.FDsSelect.map((fd, num) =>
@@ -78,8 +71,11 @@ class Info extends Component {
               )
             }
           </Grid>
+          <Button variant="contained" onClick={this.props.handleAddButtonClick}>
+            Add another FD
+          </Button>
         </Box>
-      </div>
+      </Stack>
     )
   }
 }
