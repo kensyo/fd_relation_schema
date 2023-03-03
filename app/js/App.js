@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 // import Link from '@mui/material/Link';
 
 import FDRS from "3NF_SYNTHESIS"
+import { InputLabel } from "@mui/material";
 
 const FdRelationScheme = FDRS.FdRelationScheme
 
@@ -33,27 +34,33 @@ class Info extends Component {
       this.props.attributesInput === ""
 
     return (
-      <Stack spacing={2}>
+      <Stack spacing={0.5}>
         <p> Enter your scheme information. </p>
-        <TextField
-          label="Name"
-          value={this.props.nameInput}
-          onChange={event => this.props.handleInputChange("nameInput", event)}
-          size="small"
-          placeholder={shouldPutPlaceholder ? "example: vegetables" : ""}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          label="Attributes"
-          value={this.props.attributesInput}
-          onChange={event => this.props.handleInputChange("attributesInput", event)}
-          size="small"
-          placeholder={shouldPutPlaceholder ? "vegetable_name,grower,growing_area,price" : ""}
-          helperText="🍵 Enter each attribute separated by commas."
-          InputLabelProps={{ shrink: true }}
-        />
         <Box sx={{ flexGrow: 2 }}>
-          <label>Functional Dependencies:</label>
+          <TextField
+            label="Name"
+            value={this.props.nameInput}
+            onChange={event => this.props.handleInputChange("nameInput", event)}
+            fullWidth
+            size="small"
+            placeholder={shouldPutPlaceholder ? "example: vegetables" : ""}
+            InputLabelProps={{ shrink: true }}
+          />
+        </Box>
+        <Box sx={{ flexGrow: 2 }}>
+          <InputLabel>Attributes</InputLabel>
+          <TextField
+            value={this.props.attributesInput}
+            onChange={event => this.props.handleInputChange("attributesInput", event)}
+            fullWidth
+            size="small"
+            placeholder={shouldPutPlaceholder ? "vegetable_name,grower,growing_area,price" : ""}
+            helperText="🍵 Enter each attribute separated by commas."
+            InputLabelProps={{ shrink: true }}
+          />
+        </Box>
+        <Box sx={{ flexGrow: 2 }}>
+          <InputLabel>Functional Dependencies</InputLabel>
           <Grid container rowSpacing={1}>
             {
               this.props.FDsSelect.map((fd, num) =>
