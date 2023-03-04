@@ -14,58 +14,13 @@ const createOption = (label) => ({
 });
 
 const styles = {
-  // control: (styles) => ({ ...styles, backgroundColor: 'white' }),
-  // option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-  //   const color = chroma(data.color);
-  //   return {
-  //     ...styles,
-  //     backgroundColor: isDisabled
-  //       ? undefined
-  //       : isSelected
-  //         ? data.color
-  //         : isFocused
-  //           ? color.alpha(0.1).css()
-  //           : undefined,
-  //     color: isDisabled
-  //       ? '#ccc'
-  //       : isSelected
-  //         ? chroma.contrast(color, 'white') > 2
-  //           ? 'white'
-  //           : 'black'
-  //         : data.color,
-  //     cursor: isDisabled ? 'not-allowed' : 'default',
-
-  //     ':active': {
-  //       ...styles[':active'],
-  //       backgroundColor: !isDisabled
-  //         ? isSelected
-  //           ? data.color
-  //           : color.alpha(0.3).css()
-  //         : undefined,
-  //     },
-  //   };
-  // },
   multiValue: (styles, { data }) => {
-    // const color = chroma(data.color);
     return {
       ...styles,
-      // backgroundColor: color.alpha(0.1).css(),
       transition: data.isDuplicated ? "0.15s" : "0.0s",
       opacity: data.isDuplicated ? 0 : 1
     };
   },
-  // multiValueLabel: (styles, { data }) => ({
-  //   ...styles,
-  //   color: data.color,
-  // }),
-  // multiValueRemove: (styles, { data }) => ({
-  //   ...styles,
-  //   color: data.color,
-  //   ':hover': {
-  //     backgroundColor: data.color,
-  //     color: 'white',
-  //   },
-  // }),
 };
 
 export default () => {
@@ -77,32 +32,36 @@ export default () => {
     switch (event.key) {
       case 'Enter':
       case 'Tab':
-        setValue((prev) => {
-          const trimedInputValue = inputValue.trim()
 
-          for (const [i, option] of prev.entries()) {
-            if (option.value === trimedInputValue) {
-              const newValue = [...prev]
-              newValue[i].isDuplicated = true
-              setTimeout(() => {
-                setValue((prev) => {
-                  for (const [i, option] of prev.entries()) {
-                    if (option.value === trimedInputValue) {
-                      const newValue = [...prev]
-                      newValue[i].isDuplicated = false
-                      return newValue
-                    }
+        const trimedInputValue = inputValue.trim()
+
+        for (const [i, option] of value.entries()) {
+          if (option.value === trimedInputValue) {
+            const newValue = [...value]
+            newValue[i].isDuplicated = true
+
+            setValue(newValue)
+
+            setTimeout(() => {
+              setValue((prev) => {
+                for (const [i, option] of prev.entries()) {
+                  if (option.value === trimedInputValue) {
+                    const newValue = [...prev]
+                    newValue[i].isDuplicated = false
+                    return newValue
                   }
-                  return [...prev]
-                })
-              }, 150)
+                }
+                return [...prev]
+              })
+            }, 150)
 
-              return newValue
-            }
+            event.preventDefault();
+
+            return
           }
+        }
 
-          return [...prev, createOption(trimedInputValue)]
-        });
+        setValue([...value, createOption(trimedInputValue)])
         setInputValue('');
         event.preventDefault();
     }
