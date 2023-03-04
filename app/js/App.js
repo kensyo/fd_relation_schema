@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import "../css/App.css";
 import FD from "./FD.js";
+import Attributes from "./Attributes.js"
 
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid';
@@ -10,7 +11,8 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-// import Link from '@mui/material/Link';
+import CreatableSelect from 'react-select/creatable';
+
 
 import FDRS from "3NF_SYNTHESIS"
 import { InputLabel } from "@mui/material";
@@ -37,8 +39,8 @@ class Info extends Component {
       <Stack spacing={0.5}>
         <p> Enter your scheme information. </p>
         <Box sx={{ flexGrow: 2 }}>
+          <InputLabel>Name</InputLabel>
           <TextField
-            label="Name"
             value={this.props.nameInput}
             onChange={event => this.props.handleInputChange("nameInput", event)}
             fullWidth
@@ -48,16 +50,18 @@ class Info extends Component {
           />
         </Box>
         <Box sx={{ flexGrow: 2 }}>
-          <InputLabel>Attributes</InputLabel>
           <TextField
             value={this.props.attributesInput}
             onChange={event => this.props.handleInputChange("attributesInput", event)}
             fullWidth
             size="small"
             placeholder={shouldPutPlaceholder ? "vegetable_name,grower,growing_area,price" : ""}
-            helperText="🍵 Enter each attribute separated by commas."
+            helperText="🍵 Press the Enter or Tab key to confirm your entry."
             InputLabelProps={{ shrink: true }}
           />
+        </Box>
+        <Box sx={{ flexGrow: 2 }}>
+          <Attributes/>
         </Box>
         <Box sx={{ flexGrow: 2 }}>
           <InputLabel>Functional Dependencies</InputLabel>
