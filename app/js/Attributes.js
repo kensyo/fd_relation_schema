@@ -1,5 +1,4 @@
-import { InputLabel } from '@mui/material';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 
 import CreatableSelect from 'react-select/creatable';
 
@@ -23,9 +22,31 @@ const styles = {
   },
 };
 
-export default () => {
+export default (props) => {
+  const value = props.value
+  const dispatch = props.dispatch
   const [inputValue, setInputValue] = React.useState('');
-  const [value, setValue] = React.useState([]);
+
+  const setValue = (newValue) => {
+    dispatch({ type: "attributes_change", value: newValue })
+  }
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      for (const [i, option] of value.entries()) {
+        if (option.isDuplicated) {
+          const newValue = [...value]
+          newValue[i].isDuplicated = false
+          setValue(newValue)
+        }
+      }
+    }, 150)
+
+    // If state has changed within 150ms, clear setTimeout.
+    return () => {
+      clearTimeout(id)
+    }
+  }, [value])
 
   const handleKeyDown = (event) => {
     if (!inputValue) return;
@@ -47,20 +68,6 @@ export default () => {
             newValue[i].isDuplicated = true
 
             setValue(newValue)
-
-            setTimeout(() => {
-              setValue((prev) => {
-                for (const [i, option] of prev.entries()) {
-                  if (option.value === trimedInputValue) {
-                    const newValue = [...prev]
-                    newValue[i].isDuplicated = false
-                    return newValue
-                  }
-                }
-                return [...prev]
-              })
-            }, 150)
-
             event.preventDefault();
 
             return
@@ -75,7 +82,6 @@ export default () => {
 
   return (
     <Fragment>
-      <InputLabel>Attributes</InputLabel>
       <CreatableSelect
         components={components}
         inputValue={inputValue}
@@ -85,7 +91,6 @@ export default () => {
         onChange={(newValue) => setValue(newValue)}
         onInputChange={(newValue) => setInputValue(newValue)}
         onKeyDown={handleKeyDown}
-        placeholder="vegetable_name, grower, growing_area, price"
         value={value}
         styles={styles}
       />
