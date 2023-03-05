@@ -31,7 +31,13 @@ export default () => {
     if (!inputValue) return;
     switch (event.key) {
       case 'Enter':
-      case 'Tab':
+
+        // When Enter key is pressed to confirm IME input, its keyCode is 229. Otherwise 13.
+        // Refer: https://qiita.com/ledsun/items/31e43a97413dd3c8e38e
+        // (Using keyCode seems to be deprecated.)
+        if (event.keyCode == 229) {
+          return
+        }
 
         const trimedInputValue = inputValue.trim()
 
