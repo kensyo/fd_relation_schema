@@ -1,7 +1,8 @@
 import React, { useReducer } from 'react';
-import { Stack, Container, Typography, Box, InputLabel, FormHelperText } from '@mui/material';
+import { Grid, Stack, Container, Typography, Box, InputLabel, FormHelperText, Button } from '@mui/material';
 import Name from './Name';
 import Attributes from './Attributes';
+import FD from './FD';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -19,8 +20,15 @@ function reducer(state, action) {
         attributes: action.value
       }
 
+    // for state.fds
+    case "fds_change":
+      return {
+        ...state,
+        fds: action.value
+      }
+
     default:
-      break;
+      return state
   }
 }
 
@@ -33,6 +41,11 @@ export default () => {
     ]
   })
 
+  const handleClick = () => {
+    const newFDs = [...fds]
+    newFDs.push([[], []])
+    dispatch({ type: "fds_change", value: newFDs })
+  }
 
   return (
     <Container maxWidth="md">
@@ -58,6 +71,28 @@ export default () => {
             <FormHelperText>🍵 Press enter key to confirm your input.</FormHelperText>
           </Box>
           <Box sx={{ flexGrow: 2 }}>
+            <InputLabel>Functional Dependencies</InputLabel>
+            <Grid container rowSpacing={1}>
+              {
+                fds.map((fd, index) =>
+                  <Grid key={index} container item spacing={1} alignItems="Center">
+                    <FD
+                      options={attributes}
+                      leftValue={fd[0]}
+                      rightValue={fd[1]}
+                      dispatch={dispatch}
+                      index={index}
+                      fds={fds}
+                    />
+                  </Grid>
+                )
+              }
+              <Grid item>
+                <Button variant="contained" onClick={handleClick}>
+                  Add another FD
+                </Button>
+              </Grid>
+            </Grid>
           </Box>
         </Stack>
       </Box>

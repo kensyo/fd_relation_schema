@@ -1,47 +1,63 @@
-import React, { Component } from "react";
+import React from "react";
 import Select from "react-select";
 
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button'
+import { Grid, Button } from '@mui/material'
 
-class FD extends Component {
+export default (props) => {
+  const fds = props.fds
+  const index = props.index
+  const dispatch = props.dispatch
 
-  render() {
-    const shouldPutPlaceholder = this.props.shouldPutPlaceholder
-
-    return (
-      <React.Fragment>
-        <Grid item xs={5}>
-          <Select
-            isMulti
-            className="lhs"
-            value={this.props.leftValue}
-            placeholder={shouldPutPlaceholder ? "name, grower" : ""}
-            onChange={this.props.onLeftSelectChange}
-            options={this.props.options}
-          />
-        </Grid>
-        <Grid item xs={0}>
-          ➞
-        </Grid>
-        <Grid item xs={5}>
-          <Select
-            isMulti
-            className="rhs"
-            value={this.props.rightValue}
-            placeholder={shouldPutPlaceholder ? "price" : ""}
-            onChange={this.props.onRightSelectChange}
-            options={this.props.options}
-          />
-        </Grid>
-        <Grid item xs={0}>
-          <Button variant="outlined" color="error" onClick={this.props.onButtonClick}>
-            Remove
-          </Button>
-        </Grid>
-      </React.Fragment>
-    )
+  const setFDs = (newFDs) => {
+    dispatch({ type: "fds_change", value: newFDs })
   }
-}
 
-export default FD;
+  const handleLeftChange = (event) => {
+    const newFDs = [...fds]
+    newFDs[index][0] = event
+    setFDs(newFDs)
+  }
+
+  const handleRightChange = (event) => {
+    const newFDs = [...fds]
+    newFDs[index][1] = event
+    setFDs(newFDs)
+  }
+
+  const handleClick = () => {
+    const newFDs = [...fds]
+    newFDs.splice(index, 1)
+    setFDs(newFDs)
+  }
+
+  return (
+    <React.Fragment>
+      <Grid item xs={5}>
+        <Select
+          isMulti
+          className="lhs"
+          value={props.leftValue}
+          onChange={handleLeftChange}
+          options={props.options}
+        />
+      </Grid>
+      <Grid item xs={0}>
+        ➞
+      </Grid>
+      <Grid item xs={5}>
+        <Select
+          isMulti
+          className="rhs"
+          value={props.rightValue}
+          onChange={handleRightChange}
+          options={props.options}
+        />
+      </Grid>
+      <Grid item xs={0}>
+        <Button variant="outlined" color="error" onClick={handleClick}>
+          Remove
+        </Button>
+      </Grid>
+    </React.Fragment>
+  )
+}
