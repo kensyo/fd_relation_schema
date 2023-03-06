@@ -84,8 +84,23 @@ export default (props) => {
             break;
 
           default:
+        }
+      }}
+      onChange={(event, value, reason) => {
+        console.log(event, value, reason)
+        switch (reason) {
+          case "clear":
+            setValue(value) // value is the empty array
+            break;
+
+          case "removeOption":
+            setValue(value)
+            break;
+
+          default:
             break;
         }
+        
       }}
       renderTags={(value, getTagProps) =>
         value.map((option, index) => (
