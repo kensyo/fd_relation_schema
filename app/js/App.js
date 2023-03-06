@@ -53,46 +53,19 @@ export default () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Normalize and investigate fd scheme
         </Typography>
-        <Stack spacing={0.5}>
+        <Stack spacing={1}>
           <p> Enter your scheme information. </p>
           <Box sx={{ flexGrow: 2 }}>
-            <InputLabel>Name</InputLabel>
             <Name
               value={name}
               dispatch={dispatch}
             />
           </Box>
           <Box sx={{ flexGrow: 2 }}>
-            <InputLabel>Attributes</InputLabel>
             <Attributes
               value={attributes}
               dispatch={dispatch}
             />
-            <FormHelperText>🍵 Press enter key to confirm your input.</FormHelperText>
-          </Box>
-          <Box sx={{ flexGrow: 2 }}>
-            <InputLabel>Functional Dependencies</InputLabel>
-            <Grid container rowSpacing={1}>
-              {
-                fds.map((fd, index) =>
-                  <Grid key={index} container item spacing={1} alignItems="Center">
-                    <FD
-                      options={attributes}
-                      leftValue={fd[0]}
-                      rightValue={fd[1]}
-                      dispatch={dispatch}
-                      index={index}
-                      fds={fds}
-                    />
-                  </Grid>
-                )
-              }
-              <Grid item>
-                <Button variant="contained" onClick={handleClick}>
-                  Add another FD
-                </Button>
-              </Grid>
-            </Grid>
           </Box>
         </Stack>
       </Box>

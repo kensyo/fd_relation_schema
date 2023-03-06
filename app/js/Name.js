@@ -10,6 +10,7 @@ const Name = (props) => {
         fullWidth
         size="small"
         InputLabelProps={{ shrink: true }}
+        label="Name"
       />
     </Fragment>
   );
