@@ -9,8 +9,8 @@ function reducer(state, action) {
     // for state.name
     case "name_change":
       return {
-        name: action.value,
         ...state,
+        name: action.value,
       }
 
     // for state.attributes
