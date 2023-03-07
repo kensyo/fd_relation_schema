@@ -88,7 +88,6 @@ export default (props) => {
         }
       }}
       onChange={(event, value, reason) => {
-        console.log(event, value, reason)
         switch (reason) {
           case "clear":
             setInputValue('')
