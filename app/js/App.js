@@ -53,8 +53,8 @@ export default () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Normalize and investigate fd scheme
         </Typography>
-        <Stack spacing={1}>
-          <p> Enter your scheme information. </p>
+        <Stack spacing={2}>
+          <p> Enter your scheme information: Name, Attributes, and FDs. </p>
           <Box sx={{ flexGrow: 2 }}>
             <Name
               value={name}
