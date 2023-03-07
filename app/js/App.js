@@ -67,9 +67,31 @@ export default () => {
               dispatch={dispatch}
             />
           </Box>
+          <Box sx={{ flexGrow: 2 }}>
+            <Grid container rowSpacing={1}>
+              {
+                fds.map((fd, index) =>
+                  <Grid key={index} container item spacing={1} alignItems="Center">
+                    <FD
+                      options={attributes}
+                      leftValue={fd[0]}
+                      rightValue={fd[1]}
+                      dispatch={dispatch}
+                      index={index}
+                      fds={fds}
+                    />
+                  </Grid>
+                )
+              }
+              <Grid item>
+                <Button variant="contained" onClick={handleClick}>
+                  Add another FD
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
         </Stack>
       </Box>
     </Container >
   );
 };
-
