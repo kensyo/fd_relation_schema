@@ -6,6 +6,7 @@ export default (props) => {
   const index = props.index
   const dispatch = props.dispatch
   const options = props.options
+  const placeholders = props.placeholders
 
   const indexPlus1 = index + 1
 
@@ -31,7 +32,7 @@ export default (props) => {
     setFDs(newFDs)
   }
 
-  const renderAutocomplete = (whichValue, whichSide, whichHandleChange) => {
+  const renderAutocomplete = (whichValue, whichSide, whichHandleChange, placeholder) => {
     return (
       <Autocomplete
         multiple
@@ -56,6 +57,7 @@ export default (props) => {
             label={`${whichSide} of FD${indexPlus1}`}
             size="small"
             InputLabelProps={{ shrink: true }}
+            placeholder={index === 0 ? placeholder : ""}
           />
         )}
       />
@@ -68,13 +70,13 @@ export default (props) => {
         {`${indexPlus1}. `}
       </Grid>
       <Grid item xs={5}>
-        {renderAutocomplete(props.leftValue, "LHS", handleLeftChange)}
+        {renderAutocomplete(props.leftValue, "LHS", handleLeftChange, placeholders[0])}
       </Grid>
       <Grid item xs={0}>
         ➞
       </Grid>
       <Grid item xs={5}>
-        {renderAutocomplete(props.rightValue, "RHS", handleRightChange)}
+        {renderAutocomplete(props.rightValue, "RHS", handleRightChange, placeholders[1])}
       </Grid>
       <Grid item xs={0}>
         <Button variant="outlined" color="error" onClick={handleClick}>

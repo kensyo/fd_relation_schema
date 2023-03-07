@@ -160,7 +160,7 @@ export default (props) => {
           {...params}
           variant="outlined"
           label="Attributes"
-          placeholder="あとで変更する"
+          placeholder={props.placeholder}
           helperText="🍵 Press enter to confirm your input."
           size="small"
           InputLabelProps={{ shrink: true }}

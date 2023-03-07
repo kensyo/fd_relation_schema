@@ -47,6 +47,10 @@ export default () => {
     dispatch({ type: "fds_change", value: newFDs })
   }
 
+  const shouldPutPlaceholder =
+    name === "" &&
+    attributes.length === 0
+
   return (
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
@@ -57,12 +61,14 @@ export default () => {
           <p> Enter your scheme information: Name, Attributes, and FDs. </p>
           <Box sx={{ flexGrow: 2 }}>
             <Name
+              placeholder={shouldPutPlaceholder ? "example: vegetables" : ""}
               value={name}
               dispatch={dispatch}
             />
           </Box>
           <Box sx={{ flexGrow: 2 }}>
             <Attributes
+              placeholder={shouldPutPlaceholder ? "vegetable_name, grower, growing_area, price" : ""}
               value={attributes}
               dispatch={dispatch}
               fds={fds}
@@ -74,6 +80,11 @@ export default () => {
                 fds.map((fd, index) =>
                   <Grid key={index} container item spacing={1} alignItems="Center">
                     <FD
+                      placeholders={
+                        shouldPutPlaceholder ? 
+                        ["vegetable_name, grower", "price"] :
+                        ["", ""]
+                      }
                       options={attributes}
                       leftValue={fd[0]}
                       rightValue={fd[1]}
