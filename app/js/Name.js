@@ -11,6 +11,7 @@ const Name = (props) => {
         size="small"
         InputLabelProps={{ shrink: true }}
         label="Name"
+        placeholder="あとで変更する"
       />
     </Fragment>
   );
