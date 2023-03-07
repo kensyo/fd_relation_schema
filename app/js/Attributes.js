@@ -69,6 +69,7 @@ export default (props) => {
   return (
     <Autocomplete
       onKeyDown={handleKeyDown}
+      onBlur={() => setInputValue('')}
       multiple
       id="tags-filled"
       options={[]}
@@ -90,6 +91,7 @@ export default (props) => {
         console.log(event, value, reason)
         switch (reason) {
           case "clear":
+            setInputValue('')
             setValue(value) // value is the empty array
             break;
 
@@ -100,7 +102,7 @@ export default (props) => {
           default:
             break;
         }
-        
+
       }}
       renderTags={(value, getTagProps) =>
         value.map((option, index) => (
@@ -109,8 +111,10 @@ export default (props) => {
               transition: option.isDuplicated ? "0.15s" : "0.0s",
               opacity: option.isDuplicated ? 0 : 1
             }}
+            color="primary"
             variant="outlined"
             label={option.label}
+            size="small"
             {...getTagProps({ index })} />
         ))
       }
