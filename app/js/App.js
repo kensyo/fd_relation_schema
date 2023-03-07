@@ -81,9 +81,9 @@ export default () => {
                   <Grid key={index} container item spacing={1} alignItems="Center">
                     <FD
                       placeholders={
-                        shouldPutPlaceholder ? 
-                        ["vegetable_name, grower", "price"] :
-                        ["", ""]
+                        shouldPutPlaceholder ?
+                          ["vegetable_name, grower", "price"] :
+                          ["", ""]
                       }
                       options={attributes}
                       leftValue={fd[0]}
