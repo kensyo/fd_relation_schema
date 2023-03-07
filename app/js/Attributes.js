@@ -12,9 +12,14 @@ export default (props) => {
   const value = props.value
   const dispatch = props.dispatch
   const [inputValue, setInputValue] = React.useState('');
+  const fds = props.fds
 
   const setValue = (newValue) => {
     dispatch({ type: "attributes_change", value: newValue })
+  }
+
+  const setFDs = (newFDs) => {
+    dispatch({ type: "fds_change", value: newFDs })
   }
 
   useEffect(() => {
@@ -33,6 +38,40 @@ export default (props) => {
       clearTimeout(id)
     }
   }, [value])
+
+  const handleClear = (event, value, reason) => {
+    setInputValue('')
+    setValue(value) // value is the empty array
+
+    setFDs([[[], []]])
+  }
+
+  const handleRemoveOption = (event, value, reason) => {
+    setValue(value)
+
+    const newFDs = []
+    for (const fd of fds) {
+      const newLHS = []
+      for (const elem of fd[0]) {
+        if (value.includes(elem)) {
+          newLHS.push(elem)
+        }
+      }
+
+      const newRHS = []
+      for (const elem of fd[1]) {
+        if (value.includes(elem)) {
+          newLHS.push(elem)
+        }
+      }
+
+      newFDs.push(
+        [newLHS, newRHS]
+      )
+    }
+
+    setFDs(newFDs)
+  }
 
   const handleKeyDown = (event) => {
     if (!inputValue) return;
@@ -90,12 +129,11 @@ export default (props) => {
       onChange={(event, value, reason) => {
         switch (reason) {
           case "clear":
-            setInputValue('')
-            setValue(value) // value is the empty array
+            handleClear(event, value, reason)
             break;
 
           case "removeOption":
-            setValue(value)
+            handleRemoveOption(event, value, reason)
             break;
 
           default:

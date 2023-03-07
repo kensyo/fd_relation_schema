@@ -65,6 +65,7 @@ export default () => {
             <Attributes
               value={attributes}
               dispatch={dispatch}
+              fds={fds}
             />
           </Box>
           <Box sx={{ flexGrow: 2 }}>
