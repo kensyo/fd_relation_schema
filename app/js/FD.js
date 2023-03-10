@@ -1,4 +1,4 @@
-import { Grid, Button, TextField, Autocomplete, Chip } from "@mui/material";
+import { Box, Grid, Button, TextField, Autocomplete, Chip } from "@mui/material";
 import React from "react";
 
 export default (props) => {
@@ -65,24 +65,26 @@ export default (props) => {
   }
 
   return (
-    <React.Fragment>
-      <Grid item xs={0}>
-        {`${indexPlus1}. `}
+    <Box>
+      <Grid container spacing={1} alignItems="Center">
+        <Grid item xs="auto">
+          {`${indexPlus1}. `}
+        </Grid>
+        <Grid item xs={5}>
+          {renderAutocomplete(props.leftValue, "LHS", handleLeftChange, placeholders[0])}
+        </Grid>
+        <Grid item xs="auto">
+          ➞
+        </Grid>
+        <Grid item xs={5}>
+          {renderAutocomplete(props.rightValue, "RHS", handleRightChange, placeholders[1])}
+        </Grid>
+        <Grid item xs="auto">
+          <Button variant="outlined" color="error" onClick={handleClick}>
+            Remove
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item xs={5}>
-        {renderAutocomplete(props.leftValue, "LHS", handleLeftChange, placeholders[0])}
-      </Grid>
-      <Grid item xs={0}>
-        ➞
-      </Grid>
-      <Grid item xs={5}>
-        {renderAutocomplete(props.rightValue, "RHS", handleRightChange, placeholders[1])}
-      </Grid>
-      <Grid item xs={0}>
-        <Button variant="outlined" color="error" onClick={handleClick}>
-          Remove
-        </Button>
-      </Grid>
-    </React.Fragment>
+    </Box>
   )
 }

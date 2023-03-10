@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { Grid, Stack, Container, Typography, Box, Button } from '@mui/material';
+import { Grid, Stack, Container, Typography, Box, Button, Divider } from '@mui/material';
 import Name from './Name';
 import Attributes from './Attributes';
 import FD from './FD';
@@ -57,51 +57,46 @@ export default () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Normalize and investigate fd scheme
         </Typography>
+
         <Stack spacing={2}>
-          <p> Enter your scheme information: Name, Attributes, and FDs. </p>
-          <Box sx={{ flexGrow: 2 }}>
-            <Name
-              placeholder={shouldPutPlaceholder ? "example: vegetables" : ""}
-              value={name}
-              dispatch={dispatch}
-            />
-          </Box>
-          <Box sx={{ flexGrow: 2 }}>
-            <Attributes
-              placeholder={shouldPutPlaceholder ? "vegetable_name, grower, growing_area, price" : ""}
-              value={attributes}
-              dispatch={dispatch}
-              fds={fds}
-            />
-          </Box>
-          <Box sx={{ flexGrow: 2 }}>
-            <Grid container rowSpacing={1}>
-              {
-                fds.map((fd, index) =>
-                  <Grid key={index} container item spacing={1} alignItems="Center">
-                    <FD
-                      placeholders={
-                        shouldPutPlaceholder ?
-                          ["vegetable_name, grower", "price"] :
-                          ["", ""]
-                      }
-                      options={attributes}
-                      leftValue={fd[0]}
-                      rightValue={fd[1]}
-                      dispatch={dispatch}
-                      index={index}
-                      fds={fds}
-                    />
-                  </Grid>
-                )
-              }
-              <Grid item>
-                <Button variant="contained" onClick={handleClick}>
-                  Add another FD
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
+          <Typography variant="body2" component="p"> Enter your scheme information(Name, Attributes, and FDs) and choose action. </Typography>
+          <Name
+            placeholder={shouldPutPlaceholder ? "example: vegetables" : ""}
+            value={name}
+            dispatch={dispatch}
+          />
+          <Attributes
+            placeholder={shouldPutPlaceholder ? "vegetable_name, grower, growing_area, price" : ""}
+            value={attributes}
+            dispatch={dispatch}
+            fds={fds}
+          />
+          <Stack spacing={1}>
+            {
+              fds.map((fd, index) =>
+                <FD
+                  key={index}
+                  placeholders={
+                    shouldPutPlaceholder ?
+                      ["vegetable_name, grower", "price"] :
+                      ["", ""]
+                  }
+                  options={attributes}
+                  leftValue={fd[0]}
+                  rightValue={fd[1]}
+                  dispatch={dispatch}
+                  index={index}
+                  fds={fds}
+                />
+              )
+            }
+          </Stack>
+          <Button variant="contained" onClick={handleClick}>
+            Add another FD
+          </Button>
+
+          <Divider variant="middle" />
+
         </Stack>
       </Box>
     </Container >
