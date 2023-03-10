@@ -1,5 +1,6 @@
-import { Box, Grid, Button, TextField, Autocomplete, Chip } from "@mui/material";
 import React from "react";
+import { Box, Grid, TextField, Autocomplete, Chip, Tooltip, IconButton } from "@mui/material";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export default (props) => {
   const fds = props.fds
@@ -70,19 +71,21 @@ export default (props) => {
         <Grid item xs="auto">
           {`${indexPlus1}. `}
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs>
           {renderAutocomplete(props.leftValue, "LHS", handleLeftChange, placeholders[0])}
         </Grid>
         <Grid item xs="auto">
           ➞
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs>
           {renderAutocomplete(props.rightValue, "RHS", handleRightChange, placeholders[1])}
         </Grid>
         <Grid item xs="auto">
-          <Button variant="outlined" color="error" onClick={handleClick}>
-            Remove
-          </Button>
+          <Tooltip title="Remove the FD">
+            <IconButton onClick={handleClick}>
+              <DeleteForeverIcon color="error" />
+            </IconButton>
+          </Tooltip>
         </Grid>
       </Grid>
     </Box>
