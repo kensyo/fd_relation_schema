@@ -3,6 +3,9 @@ import { Grid, Stack, Container, Typography, Box, Button, Divider } from '@mui/m
 import Name from './Name';
 import Attributes from './Attributes';
 import FD from './FD';
+import Action from './Action'
+
+import FDRS from "3NF_SYNTHESIS"
 
 function reducer(state, action) {
   switch (action.type) {
@@ -90,13 +93,21 @@ export default () => {
                 />
               )
             }
+            <Button variant="contained" onClick={handleClick}>
+              Add another FD
+            </Button>
           </Stack>
-          <Button variant="contained" onClick={handleClick}>
-            Add another FD
-          </Button>
 
           <Divider variant="middle" />
 
+          <Box sx={{ flexGrow: 2 }}>
+            <Action
+              name={name}
+              attributesRaw={attributes}
+              fdsRaw={fds}
+            />
+          </Box>
+          <Divider variant="middle" />
         </Stack>
       </Box>
     </Container >
