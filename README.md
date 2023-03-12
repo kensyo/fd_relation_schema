@@ -1,1 +1,1 @@
-# fd_relation_scheme
+# fd_relation_schema
