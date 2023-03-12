@@ -58,7 +58,7 @@ export default () => {
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Ingestigate and normalize fd relation schema
+          Scrutinize and normalize fd relation schema
         </Typography>
 
         <Stack spacing={2}>

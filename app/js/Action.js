@@ -5,7 +5,7 @@ import FDRS from "3NF_SYNTHESIS"
 import Result from './Result';
 
 const options = [
-  { value: "investigate", label: "Investigate the schema" },
+  { value: "scrutinize", label: "Scrutinize the schema" },
   { value: "synthesize", label: "Normalize into 3NF by synthesis" },
 ]
 

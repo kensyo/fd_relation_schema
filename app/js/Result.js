@@ -346,7 +346,7 @@ export default (props) => {
   let returnedComponent = (<React.Fragment></React.Fragment>)
 
   switch (doValue) {
-    case "investigate":
+    case "scrutinize":
       returnedComponent = (
         <DatabaseSchemaInfo
           schemas={[schema]}
