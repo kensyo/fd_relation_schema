@@ -58,11 +58,11 @@ export default () => {
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Normalize and investigate fd scheme
+          Ingestigate and normalize fd relation schema
         </Typography>
 
         <Stack spacing={2}>
-          <Typography variant="body2" component="p"> Enter your scheme information(Name, Attributes, and FDs) and choose action. </Typography>
+          <Typography variant="body2" component="p" gutterBottom> Enter your schema information(Name, Attributes, and FDs) and choose action. </Typography>
           <Name
             placeholder={shouldPutPlaceholder ? "example: vegetables" : ""}
             value={name}
