@@ -40,10 +40,10 @@ const renderSchemaName = (name) => {
       label="Name"
       gridContainerProps={{ alignItems: "center" }}
     >
-    {name ? 
-      <Typography fontSize={fontSize} variant="body1">{name}</Typography> :
-      <Typography fontSize={fontSize} variant="body1" color="text.disabled">{'"No Name"'}</Typography>
-    }
+      {name ?
+        <Typography fontSize={fontSize} variant="body1">{name}</Typography> :
+        <Typography fontSize={fontSize} variant="body1" color="text.disabled">{'"No Name"'}</Typography>
+      }
     </SchemaInfoItem>
   )
 }
@@ -232,25 +232,34 @@ const renderCandidateKeys = (keys) => {
       label="All the candidate keys"
     >
       <Stack spacing={0}>
-        {Array.from(keys).map((key) => {
+        {Array.from(keys).map((key, index) => {
           return (
             <Box key={`${[...key]}`}>
-              {key.size === 0 ?
-                <Typography fontSize={fontSize} variant="body1">&#8709;</Typography> :
-                Array.from(key).map((attribute) => {
-                  return (
-                    <Chip
-                      key={attribute}
-                      label={attribute}
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                      sx={{ fontSize: 14, mx: 0.1 }}
-                    />
-                  )
-                })
-              }
-              <Divider sx={{ my: 0.7 }} />
+              <Grid spacing={2} columns={24} alignItems="center" container>
+                <Grid item xs="auto">
+                  <Box sx={{ width: 50 }}>
+                    <Typography fontSize={fontSize} variant="h2">{`CK${index + 1}.`}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs>
+                  {key.size === 0 ?
+                    <Typography fontSize={fontSize} variant="body1">&#8709;</Typography> :
+                    Array.from(key).map((attribute) => {
+                      return (
+                        <Chip
+                          key={attribute}
+                          label={attribute}
+                          size="small"
+                          color="primary"
+                          variant="outlined"
+                          sx={{ fontSize: 14, mx: 0.1 }}
+                        />
+                      )
+                    })
+                  }
+                </Grid>
+              </Grid>
+              <Divider sx={{ my: 0.7, bgcolor: "primary.main" }} />
             </Box>
           )
         })}
