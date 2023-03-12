@@ -23,7 +23,7 @@ const createSchema = (name, attributesRaw, fdsRaw) => {
     fds.push([X, Y]) // adding X->Y to FDs
   }
 
-  return new FDRS.FdRelationScheme(
+  return new FDRS.FdRelationSchema(
     name,
     attributes,
     fds
