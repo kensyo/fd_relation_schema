@@ -93,7 +93,7 @@ export default () => {
                 />
               )
             }
-            <Button variant="contained" onClick={handleClick}>
+            <Button variant="contained" onClick={handleClick} sx={{ width: 160 }}>
               Add another FD
             </Button>
           </Stack>
