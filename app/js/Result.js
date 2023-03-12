@@ -231,7 +231,7 @@ const renderCandidateKeys = (keys) => {
       <Stack spacing={0}>
         {Array.from(keys).map((key) => {
           return (
-            <Box key={`${key}`}>
+            <Box key={`${[...key]}`}>
               {key.size === 0 ?
                 <Typography fontSize={fontSize} variant="body1">&#8709;</Typography> :
                 Array.from(key).map((attribute) => {
