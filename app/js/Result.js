@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Card, CardActions, CardContent, CardHeader, Chip, Collapse, Divider, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Card, CardActions, CardContent, CardHeader, Chip, Collapse, Divider, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import ClearIcon from '@mui/icons-material/Clear';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { styled } from '@mui/material/styles';
+
+import FDRS from "3NF_SYNTHESIS"
 
 const fontSize = 16
 
@@ -124,37 +129,60 @@ const renderSchemaFDs = (fds, label = "FDs") => {
   )
 }
 
-const okSign = "O"
-const ngSign = "X"
-const unknownSign = "?"
+const okSign = (nf) => {
+  return (
+    <Tooltip title={`This relation schema is in ${nf}.`} >
+      <RadioButtonUncheckedIcon sx={{ fontSize: fontSize }} />
+    </Tooltip>
+  )
+}
+const ngSign = (nf) => {
+  return (
+    <Tooltip title={`This relation schema is not in ${nf}.`} >
+      <ClearIcon sx={{ fontSize: fontSize }} />
+    </Tooltip>
+  )
+}
+const unknownSign = (nf) => {
+  return (
+    <Tooltip title={`Not sure if this schema is in ${nf} or not.`} >
+      <QuestionMarkIcon sx={{ fontSize: fontSize }} />
+    </Tooltip>
+  )
+}
 
 const renderNormality = (diagnosis) => {
   const tableRow = {
-    nf1: okSign,
-    nf2: okSign,
-    nf3: okSign,
-    bcnf: okSign,
-    nf4: okSign,
-    pjnf: okSign,
+    nf1: okSign("1NF"),
+    nf2: okSign("2NF"),
+    nf3: okSign("3NF"),
+    bcnf: okSign("BCNF"),
+    nf4: okSign("4NF"),
+    pjnf: okSign("PJNF"),
   }
 
-  const judgement = diagnosis.is_definite ? ngSign : unknownSign
+  const judge = diagnosis.is_definite ? ngSign : unknownSign
 
   switch (diagnosis.normality) {
     case "1nf":
-      tableRow.nf2 = judgement
+      tableRow.nf2 = judge("2NF")
+      // no break
 
     case "2nf":
-      tableRow.nf3 = judgement
+      tableRow.nf3 = judge("3NF")
+      // no break
 
     case "3nf":
-      tableRow.bcnf = judgement
+      tableRow.bcnf = judge("BCNF")
+      // no break
 
     case "bcnf":
-      tableRow.nf4 = judgement
+      tableRow.nf4 = judge("4NF")
+      // no break
 
     case "4nf":
-      tableRow.pjnf = judgement
+      tableRow.pjnf = judge("PJNF")
+      // no break
 
     case "pjnf":
       break
@@ -229,21 +257,53 @@ const renderCandidateKeys = (keys) => {
 }
 
 const renderOneMinimalCover = (minimalCover) => {
-  console.log(minimalCover)
   return renderSchemaFDs(Array.from(minimalCover), "One of the minimal covers")
 }
 
-// normality
-// candidate keys
-// one minimal cover
-
-const renderSchemasInformation = (schemas, subheader) => {
+const RelationSchemaInfo = (props) => {
+  const schema = props.schema
 
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  return (
+    <Card>
+      <CardContent>
+        <Stack spacing={2} >
+          <Box>{renderSchemaName(schema.name)}</Box>
+          <Box>{renderSchemaAttributes(Array.from(schema.attributes))}</Box>
+          <Box>{renderSchemaFDs(Array.from(schema.fds))}</Box>
+        </Stack>
+      </CardContent>
+      <CardActions disableSpacing>
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="share"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Stack spacing={2} >
+            <Box>{renderNormality(schema.diagnose_normality())}</Box>
+            <Box>{renderCandidateKeys(schema.find_all_keys())}</Box>
+            <Box>{renderOneMinimalCover(schema.find_minimal_cover())}</Box>
+          </Stack>
+        </CardContent>
+      </Collapse>
+    </Card>
+  )
+}
+
+const DatabaseSchemaInfo = (props) => {
+  const schemas = props.schemas
+  const subheader = props.subheader
 
   return (
     <React.Fragment>
@@ -255,34 +315,9 @@ const renderSchemasInformation = (schemas, subheader) => {
         {schemas.map((schema, index) => {
           return (
             <CardContent key={index}>
-              <Card>
-                <CardContent>
-                  <Stack spacing={2} >
-                    <Box>{renderSchemaName(schema.name)}</Box>
-                    <Box>{renderSchemaAttributes(Array.from(schema.attributes))}</Box>
-                    <Box>{renderSchemaFDs(Array.from(schema.fds))}</Box>
-                  </Stack>
-                </CardContent>
-                <CardActions disableSpacing>
-                  <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="share"
-                  >
-                    <ExpandMoreIcon />
-                  </ExpandMore>
-                </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                  <CardContent>
-                    <Stack spacing={2} >
-                      <Box>{renderNormality(schema.diagnose_normality())}</Box>
-                      <Box>{renderCandidateKeys(schema.find_all_keys())}</Box>
-                      <Box>{renderOneMinimalCover(schema.find_minimal_cover())}</Box>
-                    </Stack>
-                  </CardContent>
-                </Collapse>
-              </Card>
+              <RelationSchemaInfo
+                schema={schema}
+              />
             </CardContent>
           )
         })}
@@ -296,9 +331,34 @@ const renderSchemasInformation = (schemas, subheader) => {
 export default (props) => {
   const schema = props.schema
   const doValue = props.doValue
+  let subheader = ""
+
+  switch (doValue) {
+    case "investigate":
+      subheader = "Information of your schema"
+      break;
+
+    case "synthesize":
+      subheader = "Information of your original schema"
+      break;
+
+    default:
+      break;
+  }
 
   return (
-    renderSchemasInformation([schema, schema], "Information of your schema")
+    <React.Fragment>
+      <DatabaseSchemaInfo
+        schemas={[schema]}
+        subheader={subheader}
+      />
+      {doValue === "synthesize" &&
+        <DatabaseSchemaInfo
+          schemas={Array.from(FDRS.synthesize_into_3NF(schema))}
+          subheader="Information of the decomposed schemas"
+        />
+      }
+    </React.Fragment>
+
   )
 }
-
