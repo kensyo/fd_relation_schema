@@ -373,7 +373,7 @@ export default (props) => {
       break;
 
     default:
-      break;
+      throw new Error('No such action')
   }
 
   return returnedComponent
