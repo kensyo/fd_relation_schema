@@ -40,7 +40,10 @@ const renderSchemaName = (name) => {
       label="Name"
       gridContainerProps={{ alignItems: "center" }}
     >
-      <Typography fontSize={fontSize} variant="body1">{name}</Typography>
+    {name ? 
+      <Typography fontSize={fontSize} variant="body1">{name}</Typography> :
+      <Typography fontSize={fontSize} variant="body1" color="text.disabled">{'"No Name"'}</Typography>
+    }
     </SchemaInfoItem>
   )
 }
