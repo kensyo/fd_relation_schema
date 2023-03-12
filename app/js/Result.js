@@ -166,23 +166,23 @@ const renderNormality = (diagnosis) => {
   switch (diagnosis.normality) {
     case "1nf":
       tableRow.nf2 = judge("2NF")
-      // no break
+    // no break
 
     case "2nf":
       tableRow.nf3 = judge("3NF")
-      // no break
+    // no break
 
     case "3nf":
       tableRow.bcnf = judge("BCNF")
-      // no break
+    // no break
 
     case "bcnf":
       tableRow.nf4 = judge("4NF")
-      // no break
+    // no break
 
     case "4nf":
       tableRow.pjnf = judge("PJNF")
-      // no break
+    // no break
 
     case "pjnf":
       break
@@ -331,34 +331,47 @@ const DatabaseSchemaInfo = (props) => {
 export default (props) => {
   const schema = props.schema
   const doValue = props.doValue
-  let subheader = ""
+  let returnedComponent = (<React.Fragment></React.Fragment>)
 
   switch (doValue) {
     case "investigate":
-      subheader = "Information of your schema"
+      returnedComponent = (
+        <DatabaseSchemaInfo
+          schemas={[schema]}
+          subheader={"Information of your schema"}
+        />
+      )
       break;
 
     case "synthesize":
-      subheader = "Information of your original schema"
+      returnedComponent = (
+        <React.Fragment>
+          <Typography variant="h5" component="h2" color="text.primary">
+            Schema you have given
+          </Typography>
+          {schema.is_in_3NF() &&
+            <Typography fontSize={fontSize} variant="body1" color="warning.main">
+              {"NOTE: Your schema is already in 3NF."}
+            </Typography>
+          }
+          <DatabaseSchemaInfo
+            schemas={[schema]}
+            subheader={"Information of your original schema"}
+          />
+          <Typography variant="h5" component="h2" color="text.primary">
+            Result of synthesis
+          </Typography>
+          <DatabaseSchemaInfo
+            schemas={Array.from(FDRS.synthesize_into_3NF(schema))}
+            subheader="Information of the decomposed schemas"
+          />
+        </React.Fragment>
+      )
       break;
 
     default:
       break;
   }
 
-  return (
-    <React.Fragment>
-      <DatabaseSchemaInfo
-        schemas={[schema]}
-        subheader={subheader}
-      />
-      {doValue === "synthesize" &&
-        <DatabaseSchemaInfo
-          schemas={Array.from(FDRS.synthesize_into_3NF(schema))}
-          subheader="Information of the decomposed schemas"
-        />
-      }
-    </React.Fragment>
-
-  )
+  return returnedComponent
 }
