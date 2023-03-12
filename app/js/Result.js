@@ -198,10 +198,14 @@ const renderNormality = (diagnosis) => {
     <SchemaInfoItem
       label="Normality"
     >
-      <TableContainer component={Paper}>
-        <Table aria-label="normality">
+      <TableContainer component={(props) => {
+        return (
+          <Paper {...props} variant="outlined" />
+        )
+      }}>
+        <Table aria-label="normality" size="small">
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ bgcolor: "text.disabled" }}>
               <TableCell align="center">1NF</TableCell>
               <TableCell align="center">2NF</TableCell>
               <TableCell align="center">3NF</TableCell>
@@ -282,7 +286,7 @@ const RelationSchemaInfo = (props) => {
   };
 
   return (
-    <Card>
+    <Card variant="outlined">
       <CardContent>
         <Stack spacing={2} >
           <Box>{renderSchemaName(schema.name)}</Box>
@@ -319,7 +323,7 @@ const DatabaseSchemaInfo = (props) => {
 
   return (
     <React.Fragment>
-      <Card>
+      <Card variant="outlined">
         <CardHeader
           subheader={subheader}
         />

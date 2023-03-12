@@ -62,7 +62,7 @@ export default () => {
         </Typography>
 
         <Stack spacing={2}>
-          <Typography variant="body2" component="p" gutterBottom> Enter your schema information(Name, Attributes, and FDs) and choose action. </Typography>
+          <Typography variant="body1" gutterBottom> Enter your schema information(Name, Attributes, and FDs) and choose action. </Typography>
           <Name
             placeholder={shouldPutPlaceholder ? "example: vegetables" : ""}
             value={name}
