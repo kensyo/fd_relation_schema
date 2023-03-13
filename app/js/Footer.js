@@ -1,10 +1,15 @@
-import * as React from 'react';
-import { Chip, Stack, Typography } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import * as React from 'react'
+import { Chip, Stack, Typography } from '@mui/material'
+import GitHubIcon from '@mui/icons-material/GitHub'
 
 export default function IconChips() {
   return (
-    <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+    <Stack
+      direction="row"
+      spacing={1}
+      alignItems="center"
+      justifyContent="center"
+    >
       <Typography>
         <Chip
           icon={<GitHubIcon />}
@@ -15,5 +20,5 @@ export default function IconChips() {
         />
       </Typography>
     </Stack>
-  );
+  )
 }

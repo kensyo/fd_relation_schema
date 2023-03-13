@@ -1,26 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 
 import { Autocomplete, Chip, TextField } from '@mui/material'
-import { v4 } from 'uuid';
+import { v4 } from 'uuid'
 
 const createOption = (label) => ({
   label,
   value: label,
-  isDuplicated: false
-});
+  isDuplicated: false,
+})
 
 export default (props) => {
   const value = props.value
   const dispatch = props.dispatch
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = React.useState('')
   const fds = props.fds
 
   const setValue = (newValue) => {
-    dispatch({ type: "attributes_change", value: newValue })
+    dispatch({ type: 'attributes_change', value: newValue })
   }
 
   const setFDs = (newFDs) => {
-    dispatch({ type: "fds_change", value: newFDs })
+    dispatch({ type: 'fds_change', value: newFDs })
   }
 
   useEffect(() => {
@@ -66,43 +66,40 @@ export default (props) => {
         }
       }
 
-      newFDs.push(
-        [newLHS, newRHS, fd[2]]
-      )
+      newFDs.push([newLHS, newRHS, fd[2]])
     }
 
     setFDs(newFDs)
   }
 
   const handleKeyDown = (event) => {
-    if (!inputValue) return;
+    if (!inputValue) return
     switch (event.key) {
-      case 'Enter':
+    case 'Enter':
+      // When Enter key is pressed to confirm IME input, its keyCode is 229. Otherwise 13.
+      // Refer: https://qiita.com/ledsun/items/31e43a97413dd3c8e38e
+      // (Using keyCode seems to be deprecated.)
+      if (event.keyCode == 229) {
+        return
+      }
 
-        // When Enter key is pressed to confirm IME input, its keyCode is 229. Otherwise 13.
-        // Refer: https://qiita.com/ledsun/items/31e43a97413dd3c8e38e
-        // (Using keyCode seems to be deprecated.)
-        if (event.keyCode == 229) {
+      const trimedInputValue = inputValue.trim()
+
+      for (const [i, option] of value.entries()) {
+        if (option.value === trimedInputValue) {
+          const newValue = [...value]
+          newValue[i].isDuplicated = true
+
+          setValue(newValue)
+          event.preventDefault()
+
           return
         }
+      }
 
-        const trimedInputValue = inputValue.trim()
-
-        for (const [i, option] of value.entries()) {
-          if (option.value === trimedInputValue) {
-            const newValue = [...value]
-            newValue[i].isDuplicated = true
-
-            setValue(newValue)
-            event.preventDefault();
-
-            return
-          }
-        }
-
-        setValue([...value, createOption(trimedInputValue)])
-        setInputValue('');
-        event.preventDefault();
+      setValue([...value, createOption(trimedInputValue)])
+      setInputValue('')
+      event.preventDefault()
     }
   }
 
@@ -120,40 +117,40 @@ export default (props) => {
       value={value}
       onInputChange={(event, value, reason) => {
         switch (event.type) {
-          case "change":
-            setInputValue(value)
-            break;
+        case 'change':
+          setInputValue(value)
+          break
 
-          default:
+        default:
         }
       }}
       onChange={(event, value, reason) => {
         switch (reason) {
-          case "clear":
-            handleClear(event, value, reason)
-            break;
+        case 'clear':
+          handleClear(event, value, reason)
+          break
 
-          case "removeOption":
-            handleRemoveOption(event, value, reason)
-            break;
+        case 'removeOption':
+          handleRemoveOption(event, value, reason)
+          break
 
-          default:
-            break;
+        default:
+          break
         }
-
       }}
       renderTags={(value, getTagProps) =>
         value.map((option, index) => (
           <Chip
             style={{
-              transition: option.isDuplicated ? "0.15s" : "0.0s",
-              opacity: option.isDuplicated ? 0 : 1
+              transition: option.isDuplicated ? '0.15s' : '0.0s',
+              opacity: option.isDuplicated ? 0 : 1,
             }}
             color="primary"
             variant="outlined"
             label={option.label}
             size="small"
-            {...getTagProps({ index })} />
+            {...getTagProps({ index })}
+          />
         ))
       }
       renderInput={(params) => (
@@ -168,5 +165,5 @@ export default (props) => {
         />
       )}
     />
-  );
-};
+  )
+}
