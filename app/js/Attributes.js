@@ -1,26 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 
 import { Autocomplete, Chip, TextField } from '@mui/material'
-import { v4 } from 'uuid';
+import { v4 } from 'uuid'
 
 const createOption = (label) => ({
   label,
   value: label,
-  isDuplicated: false
-});
+  isDuplicated: false,
+})
 
 export default (props) => {
   const value = props.value
   const dispatch = props.dispatch
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = React.useState('')
   const fds = props.fds
 
   const setValue = (newValue) => {
-    dispatch({ type: "attributes_change", value: newValue })
+    dispatch({ type: 'attributes_change', value: newValue })
   }
 
   const setFDs = (newFDs) => {
-    dispatch({ type: "fds_change", value: newFDs })
+    dispatch({ type: 'fds_change', value: newFDs })
   }
 
   useEffect(() => {
@@ -66,19 +66,16 @@ export default (props) => {
         }
       }
 
-      newFDs.push(
-        [newLHS, newRHS, fd[2]]
-      )
+      newFDs.push([newLHS, newRHS, fd[2]])
     }
 
     setFDs(newFDs)
   }
 
   const handleKeyDown = (event) => {
-    if (!inputValue) return;
+    if (!inputValue) return
     switch (event.key) {
       case 'Enter':
-
         // When Enter key is pressed to confirm IME input, its keyCode is 229. Otherwise 13.
         // Refer: https://qiita.com/ledsun/items/31e43a97413dd3c8e38e
         // (Using keyCode seems to be deprecated.)
@@ -94,15 +91,15 @@ export default (props) => {
             newValue[i].isDuplicated = true
 
             setValue(newValue)
-            event.preventDefault();
+            event.preventDefault()
 
             return
           }
         }
 
         setValue([...value, createOption(trimedInputValue)])
-        setInputValue('');
-        event.preventDefault();
+        setInputValue('')
+        event.preventDefault()
     }
   }
 
@@ -120,40 +117,40 @@ export default (props) => {
       value={value}
       onInputChange={(event, value, reason) => {
         switch (event.type) {
-          case "change":
+          case 'change':
             setInputValue(value)
-            break;
+            break
 
           default:
         }
       }}
       onChange={(event, value, reason) => {
         switch (reason) {
-          case "clear":
+          case 'clear':
             handleClear(event, value, reason)
-            break;
+            break
 
-          case "removeOption":
+          case 'removeOption':
             handleRemoveOption(event, value, reason)
-            break;
+            break
 
           default:
-            break;
+            break
         }
-
       }}
       renderTags={(value, getTagProps) =>
         value.map((option, index) => (
           <Chip
             style={{
-              transition: option.isDuplicated ? "0.15s" : "0.0s",
-              opacity: option.isDuplicated ? 0 : 1
+              transition: option.isDuplicated ? '0.15s' : '0.0s',
+              opacity: option.isDuplicated ? 0 : 1,
             }}
             color="primary"
             variant="outlined"
             label={option.label}
             size="small"
-            {...getTagProps({ index })} />
+            {...getTagProps({ index })}
+          />
         ))
       }
       renderInput={(params) => (
@@ -168,5 +165,5 @@ export default (props) => {
         />
       )}
     />
-  );
-};
+  )
+}

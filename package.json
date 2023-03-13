@@ -6,7 +6,7 @@
   "author": "kensyo",
   "license": "MIT",
   "devDependencies": {
-    "3NF_SYNTHESIS": "https://github.com/kensyo/3NF_SYNTHESIS",
+    "3NF_SYNTHESIS": "https://github.com/kensyo/3NF_SYNTHESIS#v1.0.1",
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
@@ -21,6 +21,9 @@
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "css-loader": "^6.7.3",
+    "eslint": "^8.36.0",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier-eslint-cli": "^7.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "stream-browserify": "^3.0.0",

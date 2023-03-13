@@ -1,6 +1,14 @@
-import React from "react";
-import { Box, Grid, TextField, Autocomplete, Chip, Tooltip, IconButton } from "@mui/material";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import React from 'react'
+import {
+  Box,
+  Grid,
+  TextField,
+  Autocomplete,
+  Chip,
+  Tooltip,
+  IconButton,
+} from '@mui/material'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 
 export default (props) => {
   const fds = props.fds
@@ -12,7 +20,7 @@ export default (props) => {
   const indexPlus1 = index + 1
 
   const setFDs = (newFDs) => {
-    dispatch({ type: "fds_change", value: newFDs })
+    dispatch({ type: 'fds_change', value: newFDs })
   }
 
   const handleLeftChange = (event, value, reason) => {
@@ -33,7 +41,12 @@ export default (props) => {
     setFDs(newFDs)
   }
 
-  const renderAutocomplete = (whichValue, whichSide, whichHandleChange, placeholder) => {
+  const renderAutocomplete = (
+    whichValue,
+    whichSide,
+    whichHandleChange,
+    placeholder
+  ) => {
     return (
       <Autocomplete
         multiple
@@ -48,7 +61,8 @@ export default (props) => {
               variant="outlined"
               label={option.label}
               size="small"
-              {...getTagProps({ index })} />
+              {...getTagProps({ index })}
+            />
           ))
         }
         renderInput={(params) => (
@@ -58,7 +72,7 @@ export default (props) => {
             label={`${whichSide} of FD${indexPlus1}`}
             size="small"
             InputLabelProps={{ shrink: true }}
-            placeholder={index === 0 ? placeholder : ""}
+            placeholder={index === 0 ? placeholder : ''}
           />
         )}
       />
@@ -72,13 +86,23 @@ export default (props) => {
           {`${indexPlus1}. `}
         </Grid>
         <Grid item xs>
-          {renderAutocomplete(props.leftValue, "LHS", handleLeftChange, placeholders[0])}
+          {renderAutocomplete(
+            props.leftValue,
+            'LHS',
+            handleLeftChange,
+            placeholders[0]
+          )}
         </Grid>
         <Grid item xs="auto">
           ➞
         </Grid>
         <Grid item xs>
-          {renderAutocomplete(props.rightValue, "RHS", handleRightChange, placeholders[1])}
+          {renderAutocomplete(
+            props.rightValue,
+            'RHS',
+            handleRightChange,
+            placeholders[1]
+          )}
         </Grid>
         <Grid item xs="auto">
           <Tooltip title="Remove the FD">
