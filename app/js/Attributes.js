@@ -61,7 +61,7 @@ export default (props) => {
       const newRHS = []
       for (const elem of fd[1]) {
         if (value.includes(elem)) {
-          newLHS.push(elem)
+          newRHS.push(elem)
         }
       }
 
