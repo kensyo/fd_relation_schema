@@ -2,7 +2,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./js/App";
+import Main from "./js/Main";
 import Footer from "./js/Footer"
 
 import { ThemeProvider } from '@mui/material/styles';
@@ -20,7 +20,7 @@ root.render(
     <ThemeProvider theme={theme}>
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
       <CssBaseline />
-      <App />
+      <Main />
       <Footer />
     </ThemeProvider>,
   </React.StrictMode>
