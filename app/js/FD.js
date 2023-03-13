@@ -57,7 +57,7 @@ export default (props) => {
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (
             <Chip
-              color="secondary"
+              color="primary"
               variant="outlined"
               label={option.label}
               size="small"
