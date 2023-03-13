@@ -2,7 +2,7 @@ module.exports = {
   context: __dirname + '/app',
   entry: './entry',
   output: {
-    path: __dirname + '/docs/javascripts',
+    path: __dirname + '/docs/build',
     filename: 'bundle.js'
   },
   mode: process.env.DEV_ENV ? 'development' : 'production',
