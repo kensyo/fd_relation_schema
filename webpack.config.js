@@ -5,7 +5,7 @@ module.exports = {
     path: __dirname + '/docs/javascripts',
     filename: 'bundle.js'
   },
-  mode: 'development',
+  mode: process.env.DEV_ENV ? 'development' : 'production',
   module: {
     rules: [
       {
