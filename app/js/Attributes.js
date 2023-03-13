@@ -75,31 +75,31 @@ export default (props) => {
   const handleKeyDown = (event) => {
     if (!inputValue) return
     switch (event.key) {
-    case 'Enter':
-      // When Enter key is pressed to confirm IME input, its keyCode is 229. Otherwise 13.
-      // Refer: https://qiita.com/ledsun/items/31e43a97413dd3c8e38e
-      // (Using keyCode seems to be deprecated.)
-      if (event.keyCode == 229) {
-        return
-      }
-
-      const trimedInputValue = inputValue.trim()
-
-      for (const [i, option] of value.entries()) {
-        if (option.value === trimedInputValue) {
-          const newValue = [...value]
-          newValue[i].isDuplicated = true
-
-          setValue(newValue)
-          event.preventDefault()
-
+      case 'Enter':
+        // When Enter key is pressed to confirm IME input, its keyCode is 229. Otherwise 13.
+        // Refer: https://qiita.com/ledsun/items/31e43a97413dd3c8e38e
+        // (Using keyCode seems to be deprecated.)
+        if (event.keyCode == 229) {
           return
         }
-      }
 
-      setValue([...value, createOption(trimedInputValue)])
-      setInputValue('')
-      event.preventDefault()
+        const trimedInputValue = inputValue.trim()
+
+        for (const [i, option] of value.entries()) {
+          if (option.value === trimedInputValue) {
+            const newValue = [...value]
+            newValue[i].isDuplicated = true
+
+            setValue(newValue)
+            event.preventDefault()
+
+            return
+          }
+        }
+
+        setValue([...value, createOption(trimedInputValue)])
+        setInputValue('')
+        event.preventDefault()
     }
   }
 
@@ -117,25 +117,25 @@ export default (props) => {
       value={value}
       onInputChange={(event, value, reason) => {
         switch (event.type) {
-        case 'change':
-          setInputValue(value)
-          break
+          case 'change':
+            setInputValue(value)
+            break
 
-        default:
+          default:
         }
       }}
       onChange={(event, value, reason) => {
         switch (reason) {
-        case 'clear':
-          handleClear(event, value, reason)
-          break
+          case 'clear':
+            handleClear(event, value, reason)
+            break
 
-        case 'removeOption':
-          handleRemoveOption(event, value, reason)
-          break
+          case 'removeOption':
+            handleRemoveOption(event, value, reason)
+            break
 
-        default:
-          break
+          default:
+            break
         }
       }}
       renderTags={(value, getTagProps) =>

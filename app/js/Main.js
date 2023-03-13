@@ -17,29 +17,29 @@ import FDRS from '3NF_SYNTHESIS'
 
 function reducer(state, action) {
   switch (action.type) {
-  // for state.name
-  case 'name_change':
-    return {
-      ...state,
-      name: action.value,
-    }
+    // for state.name
+    case 'name_change':
+      return {
+        ...state,
+        name: action.value,
+      }
 
     // for state.attributes
-  case 'attributes_change':
-    return {
-      ...state,
-      attributes: action.value,
-    }
+    case 'attributes_change':
+      return {
+        ...state,
+        attributes: action.value,
+      }
 
     // for state.fds
-  case 'fds_change':
-    return {
-      ...state,
-      fds: action.value,
-    }
+    case 'fds_change':
+      return {
+        ...state,
+        fds: action.value,
+      }
 
-  default:
-    return state
+    default:
+      return state
   }
 }
 
