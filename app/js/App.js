@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { Grid, Stack, Container, Typography, Box, Button, Divider } from '@mui/material';
+import { Stack, Container, Typography, Box, Button, Divider } from '@mui/material';
 import Name from './Name';
 import Attributes from './Attributes';
 import FD from './FD';
