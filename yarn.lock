@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"3NF_SYNTHESIS@https://github.com/kensyo/3NF_SYNTHESIS":
+"3NF_SYNTHESIS@https://github.com/kensyo/3NF_SYNTHESIS#v1.0.1":
   version "1.0.0"
   resolved "https://github.com/kensyo/3NF_SYNTHESIS#77c6cac8a5f854248506595fd0d54c34d005630a"
 

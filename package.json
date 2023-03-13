@@ -6,7 +6,7 @@
   "author": "kensyo",
   "license": "MIT",
   "devDependencies": {
-    "3NF_SYNTHESIS": "https://github.com/kensyo/3NF_SYNTHESIS",
+    "3NF_SYNTHESIS": "https://github.com/kensyo/3NF_SYNTHESIS#v1.0.1",
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
