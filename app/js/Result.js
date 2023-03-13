@@ -148,7 +148,7 @@ const ngSign = (nf) => {
 }
 const unknownSign = (nf) => {
   return (
-    <Tooltip title={`Not sure if this schema is in ${nf} or not.`} >
+    <Tooltip title={`Not sure if this relation schema is in ${nf} or not.`} >
       <QuestionMarkIcon sx={{ fontSize: fontSize }} />
     </Tooltip>
   )
