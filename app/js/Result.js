@@ -328,9 +328,9 @@ const DatabaseSchemaInfo = (props) => {
           subheader={subheader}
         />
 
-        {schemas.map((schema, index) => {
+        {schemas.map((schema) => {
           return (
-            <CardContent key={index}>
+            <CardContent key={schema.name}>
               <RelationSchemaInfo
                 schema={schema}
               />

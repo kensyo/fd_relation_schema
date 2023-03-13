@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Autocomplete, Chip, TextField } from '@mui/material'
+import { v4 } from 'uuid';
 
 const createOption = (label) => ({
   label,
@@ -43,7 +44,7 @@ export default (props) => {
     setInputValue('')
     setValue(value) // value is the empty array
 
-    setFDs([[[], []]])
+    setFDs([[[], [], v4()]])
   }
 
   const handleRemoveOption = (event, value, reason) => {
@@ -66,7 +67,7 @@ export default (props) => {
       }
 
       newFDs.push(
-        [newLHS, newRHS]
+        [newLHS, newRHS, fd[2]]
       )
     }
 

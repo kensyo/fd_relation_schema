@@ -4,6 +4,7 @@ import Name from './Name';
 import Attributes from './Attributes';
 import FD from './FD';
 import Action from './Action'
+import { v4 } from 'uuid'
 
 import FDRS from "3NF_SYNTHESIS"
 
@@ -40,13 +41,13 @@ export default () => {
     name: "",
     attributes: [],
     fds: [
-      [[], []] // [LHSarray, RHSarray]
+      [[], [], v4()] // [LHSarray, RHSarray, uuid]
     ]
   })
 
   const handleClick = () => {
     const newFDs = [...fds]
-    newFDs.push([[], []])
+    newFDs.push([[], [], v4()])
     dispatch({ type: "fds_change", value: newFDs })
   }
 
@@ -78,7 +79,7 @@ export default () => {
             {
               fds.map((fd, index) =>
                 <FD
-                  key={index}
+                  key={fd[2]}
                   placeholders={
                     shouldPutPlaceholder ?
                       ["vegetable_name, grower", "price"] :
