@@ -51,6 +51,13 @@ export default (props) => {
       <Autocomplete
         multiple
         filterSelectedOptions
+        isOptionEqualToValue={(option, value) => {
+          if (option.label === value.label && option.value === value.value) {
+            return true
+          } else {
+            return false
+          }
+        }}
         value={whichValue}
         onChange={whichHandleChange}
         options={options}

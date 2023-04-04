@@ -6,14 +6,16 @@ import {
   Box,
   Button,
   Divider,
+  Grid,
 } from '@mui/material'
 import Name from './Name'
 import Attributes from './Attributes'
 import FD from './FD'
 import Action from './Action'
-import { v4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 import FDRS from '3NF_SYNTHESIS'
+import Storage from './Storage'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -39,7 +41,7 @@ function reducer(state, action) {
       }
 
     default:
-      return state
+      throw new Error('machigai')
   }
 }
 
@@ -48,80 +50,92 @@ export default () => {
     name: '',
     attributes: [],
     fds: [
-      [[], [], v4()], // [LHSarray, RHSarray, uuid]
+      [[], [], uuidv4()], // [LHSarray, RHSarray, uuid]
     ],
   })
 
   const handleClick = () => {
     const newFDs = [...fds]
-    newFDs.push([[], [], v4()])
+    newFDs.push([[], [], uuidv4()])
     dispatch({ type: 'fds_change', value: newFDs })
   }
 
   const shouldPutPlaceholder = name === '' && attributes.length === 0
 
   return (
-    <Container maxWidth="md">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Scrutinize and normalize fd relation schema
-        </Typography>
-
-        <Stack spacing={2}>
-          <Typography variant="body1" gutterBottom>
-            {' '}
-            Enter your schema information(Name, Attributes, and FDs) and choose
-            action.{' '}
-          </Typography>
-          <Name
-            placeholder={shouldPutPlaceholder ? 'example: vegetables' : ''}
-            value={name}
-            dispatch={dispatch}
-          />
-          <Attributes
-            placeholder={
-              shouldPutPlaceholder
-                ? 'vegetable_name, grower, growing_area, price'
-                : ''
-            }
-            value={attributes}
-            dispatch={dispatch}
+    <Container maxWidth="lg">
+      <Grid container>
+        <Grid item xs={3}>
+          <Storage
+            name={name}
+            attributes={attributes}
             fds={fds}
+            dispatch={dispatch}
           />
-          <Stack spacing={1}>
-            {fds.map((fd, index) => (
-              <FD
-                key={fd[2]}
-                placeholders={
-                  shouldPutPlaceholder
-                    ? ['vegetable_name, grower', 'price']
-                    : ['', '']
-                }
-                options={attributes}
-                leftValue={fd[0]}
-                rightValue={fd[1]}
+        </Grid>
+        <Grid item xs={9}>
+          <Box sx={{ my: 4 }}>
+            <Typography variant="h4" component="h1" gutterBottom>
+              Scrutinize and normalize fd relation schema
+            </Typography>
+
+            <Stack spacing={2}>
+              <Typography variant="body1" gutterBottom>
+                {' '}
+                Enter your schema information(Name, Attributes, and FDs) and
+                choose action.{' '}
+              </Typography>
+              <Name
+                placeholder={shouldPutPlaceholder ? 'example: vegetables' : ''}
+                value={name}
                 dispatch={dispatch}
-                index={index}
+              />
+              <Attributes
+                placeholder={
+                  shouldPutPlaceholder
+                    ? 'vegetable_name, grower, growing_area, price'
+                    : ''
+                }
+                value={attributes}
+                dispatch={dispatch}
                 fds={fds}
               />
-            ))}
-            <Button
-              variant="contained"
-              onClick={handleClick}
-              sx={{ width: 160 }}
-            >
-              Add another FD
-            </Button>
-          </Stack>
+              <Stack spacing={1}>
+                {fds.map((fd, index) => (
+                  <FD
+                    key={fd[2]}
+                    placeholders={
+                      shouldPutPlaceholder
+                        ? ['vegetable_name, grower', 'price']
+                        : ['', '']
+                    }
+                    options={attributes}
+                    leftValue={fd[0]}
+                    rightValue={fd[1]}
+                    dispatch={dispatch}
+                    index={index}
+                    fds={fds}
+                  />
+                ))}
+                <Button
+                  variant="contained"
+                  onClick={handleClick}
+                  sx={{ width: 160 }}
+                >
+                  Add another FD
+                </Button>
+              </Stack>
 
-          <Divider variant="middle" />
+              <Divider variant="middle" />
 
-          <Box sx={{ flexGrow: 2 }}>
-            <Action name={name} attributesRaw={attributes} fdsRaw={fds} />
+              <Box sx={{ flexGrow: 2 }}>
+                <Action name={name} attributesRaw={attributes} fdsRaw={fds} />
+              </Box>
+              <Divider variant="middle" />
+            </Stack>
           </Box>
-          <Divider variant="middle" />
-        </Stack>
-      </Box>
+        </Grid>
+      </Grid>
     </Container>
   )
 }

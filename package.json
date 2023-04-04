@@ -35,6 +35,6 @@
   "dependencies": {},
   "scripts": {
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "DEV_ENV=1 webpack --watch"
   }
 }
