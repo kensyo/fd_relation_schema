@@ -6,19 +6,23 @@ import {
   List,
   ListItem,
   ListItemButton,
+  ListItemSecondaryAction,
   ListItemText,
   Menu,
   MenuItem,
+  TextField,
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SaveAsIcon from '@mui/icons-material/SaveAs'
 import SaveIcon from '@mui/icons-material/Save'
 import ClearAllIcon from '@mui/icons-material/ClearAll'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
+import AddIcon from '@mui/icons-material/Add'
 import { styled, alpha } from '@mui/material/styles'
 import database from './idbloader'
+import { v4 as uuidv4 } from 'uuid'
 
 const schema_datas = database.getObjectstore('schema_datas')
 
@@ -77,7 +81,7 @@ function getNormalizedAttiributes(attributes) {
 }
 
 function SaveMenu(props) {
-  const { name, attributes, fds, currentDataID, setCurrentDataID, fetchDatas } =
+  const { name, attributes, fds, currentDataID, setCurrentDataID, fetchDatas, dispatch } =
     props
 
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -89,6 +93,36 @@ function SaveMenu(props) {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const onClickNew = async () => {
+    if (!currentDataID) {
+      throw new Error('A initial schema exists.')
+    }
+
+    const name = ''
+    const attributes = []
+    const fds = [[[], [], uuidv4()]]
+
+    const id = await schema_datas.add({
+      name,
+      attributes,
+      fds,
+      title: 'A New Schema',
+    })
+
+    dispatch({ type: 'name_change', value: name })
+    dispatch({
+      type: 'attributes_change',
+      value: attributes,
+    })
+    dispatch({ type: 'fds_change', value: fds })
+
+    setCurrentDataID(id)
+
+    setAnchorEl(null)
+
+    fetchDatas()
   }
 
   const onClickSave = async () => {
@@ -139,8 +173,7 @@ function SaveMenu(props) {
   return (
     <div>
       <Button
-        id="demo-customized-button"
-        aria-controls={open ? 'demo-customized-menu' : undefined}
+        // aria-controls={open ? 'demo-customized-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         variant="contained"
@@ -160,15 +193,24 @@ function SaveMenu(props) {
         onClose={handleClose}
       >
         <MenuItem
+          onClick={onClickNew}
+          disableRipple
+          disabled={currentDataID ? false : true}
+        >
+          <AddIcon />
+          New
+        </MenuItem>
+        <Divider sx={{ my: 0.5 }} />
+        <MenuItem
           onClick={onClickSave}
           disableRipple
           disabled={currentDataID ? false : true}
         >
-          <SaveAsIcon />
+          <SaveIcon />
           Save (overwrite)
         </MenuItem>
         <MenuItem onClick={onClickSaveAsNew} disableRipple>
-          <SaveIcon />
+          <SaveAsIcon />
           Save as new
         </MenuItem>
         <Divider sx={{ my: 0.5 }} />
@@ -181,11 +223,37 @@ function SaveMenu(props) {
   )
 }
 
+function FocusedTextField(props) {
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [])
+
+  return <TextField inputRef={inputRef} {...props} />
+}
+
+const StyledFocusedTextField = styled(FocusedTextField)`
+  & .MuiInputBase-root {
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  & .MuiInputBase-input {
+    padding: 0;
+  }
+`
+
 const Storage = (props) => {
   const { name, attributes, fds, dispatch } = props
 
   const [currentDataID, setCurrentDataID] = useState(null)
   const [datas, setDatas] = useState([])
+  const [editingID, setEditingID] = useState(null)
+  const [editingText, setEditingText] = useState('')
 
   const fetchDatas = async () => {
     // I don't know why validation is needed here.
@@ -213,19 +281,60 @@ const Storage = (props) => {
       />
       <List>
         {datas.map((data) => (
-          <ListItem
-            key={data.id}
-            disablePadding
-            secondaryAction={
+          <ListItem key={data.id} disablePadding>
+            <ListItemButton
+              sx={data.id === currentDataID ? { bgcolor: 'text.disabled' } : {}}
+              onClick={async () => {
+                const schema_data = await schema_datas.get(data.id)
+                dispatch({ type: 'name_change', value: schema_data.name })
+                dispatch({
+                  type: 'attributes_change',
+                  value: schema_data.attributes,
+                })
+                dispatch({ type: 'fds_change', value: schema_data.fds })
+                setCurrentDataID(data.id)
+              }}
+            >
+              {data.id === editingID ? (
+                <StyledFocusedTextField
+                  value={editingText}
+                  onChange={(event) => {
+                    setEditingText(event.target.value)
+                  }}
+                  onKeyPress={(event) => {
+                    if (event.key === 'Enter') {
+                      event.target.blur()
+                    }
+                  }}
+                  size="small"
+                  onBlur={(event) => {
+                    schema_datas.update({
+                      ...data,
+                      title: event.target.value,
+                    })
+                    fetchDatas()
+                    setEditingText('')
+                    setEditingID(null)
+                  }}
+                />
+              ) : (
+                <ListItemText
+                  primary={data.title || 'No Title'}
+                  primaryTypographyProps={{
+                    noWrap: true,
+                    color: data.title ? 'text.primary' : 'text.disabled',
+                  }}
+                />
+              )}
+            </ListItemButton>
+            <ListItemSecondaryAction>
               <>
                 <IconButton
                   edge="end"
                   aria-label="edit"
                   onClick={async () => {
-                    await schema_datas.delete(data.id)
-
-                    setCurrentDataID(null)
-                    fetchDatas()
+                    setEditingID(data.id)
+                    setEditingText(data.title)
                   }}
                 >
                   <EditIcon />
@@ -243,29 +352,7 @@ const Storage = (props) => {
                   <DeleteForeverIcon />
                 </IconButton>
               </>
-            }
-          >
-            <ListItemButton
-              sx={data.id === currentDataID ? { bgcolor: 'text.disabled' } : {}}
-              onClick={async () => {
-                const schema_data = await schema_datas.get(data.id)
-                console.log(schema_data)
-                dispatch({ type: 'name_change', value: schema_data.name })
-                dispatch({
-                  type: 'attributes_change',
-                  value: schema_data.attributes,
-                })
-                dispatch({ type: 'fds_change', value: schema_data.fds })
-                setCurrentDataID(data.id)
-              }}
-            >
-              <ListItemText
-                primary={data.title}
-                primaryTypographyProps={{
-                  noWrap: true,
-                }}
-              />
-            </ListItemButton>
+            </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
