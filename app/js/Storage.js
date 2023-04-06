@@ -2,6 +2,9 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
   IconButton,
   List,
   ListItem,
@@ -9,6 +12,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Switch,
   TextField,
 } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
@@ -22,6 +26,7 @@ import AddIcon from '@mui/icons-material/Add'
 import { styled, alpha } from '@mui/material/styles'
 import database from './idbloader'
 import { v4 as uuidv4 } from 'uuid'
+import config from '../config.json'
 
 const schema_datas = database.getObjectstore('schema_datas')
 
@@ -87,6 +92,7 @@ function SaveMenu(props) {
     currentDataID,
     setCurrentDataID,
     fetchDatas,
+    autoSave,
     dispatch,
   } = props
 
@@ -160,7 +166,7 @@ function SaveMenu(props) {
         ? (
           await schema_datas.get(currentDataID)
         ).title
-        : name,
+        : "A New Schema",
     })
 
     setCurrentDataID(id)
@@ -179,6 +185,29 @@ function SaveMenu(props) {
 
     fetchDatas()
   }
+
+  // for auto-saving
+  useEffect(() => {
+    if (!autoSave) {
+      return
+    }
+
+    if (currentDataID) {
+      // I don't know why initialization hasn't been completed
+      onClickSave().catch((e) => {
+        if (e.name !== 'IDBConnectionError') {
+          throw e
+        }
+      })
+    } else {
+      // I don't know why initialization hasn't been completed
+      onClickSaveAsNew().catch((e) => {
+        if (e.name !== 'IDBConnectionError') {
+          throw e
+        }
+      })
+    }
+  }, [name, attributes, fds])
 
   return (
     <div>
@@ -264,12 +293,29 @@ const Storage = (props) => {
   const [editingID, setEditingID] = useState(null)
   const [editingText, setEditingText] = useState('')
 
-  const fetchDatas = async () => {
-    // I don't know why validation is needed here.
-    if (!schema_datas.database.db) {
-      await schema_datas.database.open()
+  const [autoSave, setAutoSave] = useState(() => {
+    const storedData = localStorage.getItem(
+      config.localstorage_key_for_autosave
+    )
+    if (storedData) {
+      return JSON.parse(storedData)
+    } else {
+      return false
     }
-    const allDatas = await schema_datas.getAll({ order: 'prev' })
+  })
+
+  const fetchDatas = async () => {
+    let allDatas
+    try {
+      allDatas = await schema_datas.getAll({ order: 'prev' })
+    } catch (e) {
+      // I don't know why initialization hasn't been completed
+      if (e.name !== 'IDBConnectionError') {
+        throw e
+      }
+      await schema_datas.database.open()
+      allDatas = await schema_datas.getAll({ order: 'prev' })
+    }
     setDatas(allDatas)
   }
 
@@ -279,6 +325,32 @@ const Storage = (props) => {
 
   return (
     <Box sx={{ m: 4 }}>
+      <FormControl component="fieldset">
+        <FormGroup aria-label="editing-option">
+          <FormControlLabel
+            control={
+              <Switch
+                color="primary"
+                checked={autoSave}
+                onClick={(event) => {
+                  setAutoSave(event.target.checked)
+                  localStorage.setItem(
+                    config.localstorage_key_for_autosave,
+                    `${event.target.checked}`
+                  )
+                }}
+              />
+            }
+            label="Auto-Save"
+            labelPlacement="end"
+          />
+          <FormControlLabel
+            control={<Switch color="primary" />}
+            label="Lock"
+            labelPlacement="end"
+          />
+        </FormGroup>
+      </FormControl>
       <SaveMenu
         name={name}
         attributes={attributes}
@@ -287,6 +359,7 @@ const Storage = (props) => {
         currentDataID={currentDataID}
         setCurrentDataID={setCurrentDataID}
         fetchDatas={fetchDatas}
+        autoSave={autoSave}
       />
       <List>
         {datas.map((data) => (

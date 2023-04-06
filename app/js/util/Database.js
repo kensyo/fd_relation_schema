@@ -35,6 +35,13 @@ class Database {
   }
 }
 
+class IDBConnectionError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'IDBConnectionError'
+  }
+}
+
 class Model {
   constructor(database, objectStoreName) {
     this.database = database
@@ -44,7 +51,7 @@ class Model {
   add(data, key) {
     return new Promise((resolve, reject) => {
       if (!this.database.db) {
-        throw new Error('IndexedDB is not open.')
+        throw new IDBConnectionError('IndexedDB is not open.')
       }
 
       const transaction = this.database.db.transaction(
@@ -66,9 +73,9 @@ class Model {
   }
 
   get(key) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!this.database.db) {
-        throw new Error('IndexedDB is not open.')
+        throw new IDBConnectionError('IndexedDB is not open.')
       }
 
       const transaction = this.database.db.transaction(
@@ -88,34 +95,10 @@ class Model {
     })
   }
 
-  // getAll(descendant = false) {
-  //   return new Promise((resolve, reject) => {
-  //     if (!this.database.db) {
-  //       throw new Error('IndexedDB is not open.')
-  //     }
-  //
-  //     const transaction = this.database.db.transaction(
-  //       this.objectStoreName,
-  //       'readonly'
-  //     )
-  //     const objectStore = transaction.objectStore(this.objectStoreName)
-  //
-  //     const request = objectStore.getAll()
-  //
-  //     request.onsuccess = (event) => {
-  //       resolve(event.target.result)
-  //     }
-  //
-  //     request.onerror = (event) => {
-  //       reject(event.target.error)
-  //     }
-  //   })
-  // }
-
   getAll(option = {}) {
     return new Promise((resolve, reject) => {
       if (!this.database.db) {
-        throw new Error('IndexedDB is not open.')
+        throw new IDBConnectionError('IndexedDB is not open.')
       }
       const transaction = this.database.db.transaction(
         this.objectStoreName,
@@ -152,7 +135,7 @@ class Model {
   update(data, key) {
     return new Promise((resolve, reject) => {
       if (!this.database.db) {
-        throw new Error('IndexedDB is not open.')
+        throw new IDBConnectionError('IndexedDB is not open.')
       }
 
       const transaction = this.database.db.transaction(
@@ -177,7 +160,7 @@ class Model {
   delete(key) {
     return new Promise((resolve, reject) => {
       if (!this.database.db) {
-        throw new Error('IndexedDB is not open.')
+        throw new IDBConnectionError('IndexedDB is not open.')
       }
 
       const transaction = this.database.db.transaction(
@@ -201,7 +184,7 @@ class Model {
   clear() {
     return new Promise((resolve, reject) => {
       if (!this.database.db) {
-        throw new Error('IndexedDB is not open.')
+        throw new IDBConnectionError('IndexedDB is not open.')
       }
 
       const transaction = this.database.db.transaction(
