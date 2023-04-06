@@ -6,7 +6,6 @@ import {
   List,
   ListItem,
   ListItemButton,
-  ListItemSecondaryAction,
   ListItemText,
   Menu,
   MenuItem,
@@ -81,8 +80,15 @@ function getNormalizedAttiributes(attributes) {
 }
 
 function SaveMenu(props) {
-  const { name, attributes, fds, currentDataID, setCurrentDataID, fetchDatas, dispatch } =
-    props
+  const {
+    name,
+    attributes,
+    fds,
+    currentDataID,
+    setCurrentDataID,
+    fetchDatas,
+    dispatch,
+  } = props
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -150,7 +156,11 @@ function SaveMenu(props) {
       name,
       attributes: getNormalizedAttiributes(attributes),
       fds,
-      title: name || 'No Name',
+      title: currentDataID
+        ? (
+          await schema_datas.get(currentDataID)
+        ).title
+        : name,
     })
 
     setCurrentDataID(id)
@@ -184,7 +194,6 @@ function SaveMenu(props) {
         Options
       </Button>
       <StyledMenu
-        id="demo-customized-menu"
         MenuListProps={{
           'aria-labelledby': 'demo-customized-button',
         }}
@@ -281,53 +290,10 @@ const Storage = (props) => {
       />
       <List>
         {datas.map((data) => (
-          <ListItem key={data.id} disablePadding>
-            <ListItemButton
-              sx={data.id === currentDataID ? { bgcolor: 'text.disabled' } : {}}
-              onClick={async () => {
-                const schema_data = await schema_datas.get(data.id)
-                dispatch({ type: 'name_change', value: schema_data.name })
-                dispatch({
-                  type: 'attributes_change',
-                  value: schema_data.attributes,
-                })
-                dispatch({ type: 'fds_change', value: schema_data.fds })
-                setCurrentDataID(data.id)
-              }}
-            >
-              {data.id === editingID ? (
-                <StyledFocusedTextField
-                  value={editingText}
-                  onChange={(event) => {
-                    setEditingText(event.target.value)
-                  }}
-                  onKeyPress={(event) => {
-                    if (event.key === 'Enter') {
-                      event.target.blur()
-                    }
-                  }}
-                  size="small"
-                  onBlur={(event) => {
-                    schema_datas.update({
-                      ...data,
-                      title: event.target.value,
-                    })
-                    fetchDatas()
-                    setEditingText('')
-                    setEditingID(null)
-                  }}
-                />
-              ) : (
-                <ListItemText
-                  primary={data.title || 'No Title'}
-                  primaryTypographyProps={{
-                    noWrap: true,
-                    color: data.title ? 'text.primary' : 'text.disabled',
-                  }}
-                />
-              )}
-            </ListItemButton>
-            <ListItemSecondaryAction>
+          <ListItem
+            key={data.id}
+            disablePadding
+            secondaryAction={
               <>
                 <IconButton
                   edge="end"
@@ -345,14 +311,65 @@ const Storage = (props) => {
                   onClick={async () => {
                     await schema_datas.delete(data.id)
 
-                    setCurrentDataID(null)
+                    if (currentDataID === data.id) {
+                      setCurrentDataID(null)
+                    }
                     fetchDatas()
                   }}
                 >
                   <DeleteForeverIcon />
                 </IconButton>
               </>
-            </ListItemSecondaryAction>
+            }
+          >
+            <ListItemButton
+              sx={{ height: '48px' }}
+              selected={data.id === currentDataID}
+              onClick={async () => {
+                const schema_data = await schema_datas.get(data.id)
+                dispatch({ type: 'name_change', value: schema_data.name })
+                dispatch({
+                  type: 'attributes_change',
+                  value: schema_data.attributes,
+                })
+                dispatch({ type: 'fds_change', value: schema_data.fds })
+                setCurrentDataID(data.id)
+              }}
+            >
+              {data.id === editingID ? (
+                <StyledFocusedTextField
+                  sx={{ width: 'calc(100% - 32px)' }}
+                  value={editingText}
+                  onChange={(event) => {
+                    setEditingText(event.target.value)
+                  }}
+                  onKeyPress={(event) => {
+                    if (event.key === 'Enter') {
+                      event.target.blur()
+                    }
+                  }}
+                  size="small"
+                  onBlur={async (event) => {
+                    await schema_datas.update({
+                      ...data,
+                      title: event.target.value,
+                    })
+                    fetchDatas()
+                    setEditingText('')
+                    setEditingID(null)
+                  }}
+                />
+              ) : (
+                <ListItemText
+                  primary={data.title || 'No Title'}
+                  primaryTypographyProps={{
+                    width: 'calc(100% - 32px)',
+                    noWrap: true,
+                    color: data.title ? 'text.primary' : 'text.disabled',
+                  }}
+                />
+              )}
+            </ListItemButton>
           </ListItem>
         ))}
       </List>
