@@ -166,7 +166,7 @@ function SaveMenu(props) {
       attributes: getNormalizedAttiributes(attributes),
       fds,
       title: currentDataID
-        ? (
+        ? "🔁 " + (
           await schema_datas.get(currentDataID)
         ).title
         : 'A New Schema',
