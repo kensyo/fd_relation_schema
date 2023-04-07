@@ -1,13 +1,22 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { TextField } from '@mui/material'
 
 const Name = (props) => {
+  const [inputValue, setInputValue] = useState('')
+
+  useEffect(() => {
+    setInputValue(props.value)
+  }, [props.value])
+
   return (
     <Fragment>
       <TextField
-        value={props.value}
+        value={inputValue}
         onChange={(event) => {
-          props.dispatch({ type: 'name_change', value: event.target.value })
+          setInputValue(event.target.value)
+        }}
+        onBlur={() => {
+          props.dispatch({ type: 'name_change', value: inputValue })
         }}
         disabled={props.isLocked}
         fullWidth
