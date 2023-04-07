@@ -168,7 +168,7 @@ function SaveMenu(props) {
       fds,
       title: currentDataID
         ? '🔁 ' + (await schema_datas.get(currentDataID)).title
-        : 'A New Schema',
+        : name,
       isLocked,
     })
 
