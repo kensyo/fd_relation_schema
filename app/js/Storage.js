@@ -1,6 +1,11 @@
 import {
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   FormControl,
   FormControlLabel,
@@ -15,6 +20,7 @@ import {
   Switch,
   TextField,
   Tooltip,
+  Typography,
 } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import SaveAsIcon from '@mui/icons-material/SaveAs'
@@ -22,6 +28,7 @@ import SaveIcon from '@mui/icons-material/Save'
 import ClearAllIcon from '@mui/icons-material/ClearAll'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import WarningIcon from '@mui/icons-material/Warning'
 import EditIcon from '@mui/icons-material/Edit'
 import AddIcon from '@mui/icons-material/Add'
 import { styled, alpha } from '@mui/material/styles'
@@ -128,7 +135,7 @@ function SaveMenu(props) {
       isLocked: false,
     })
 
-    enqueueSnackbar(`A new save data has been created: "${title}"`, {
+    enqueueSnackbar(`A new data has been created: "${title}"`, {
       variant: 'success',
     })
 
@@ -180,7 +187,7 @@ function SaveMenu(props) {
       isLocked,
     })
 
-    enqueueSnackbar(`A new save data has been created: "${title}"`, {
+    enqueueSnackbar(`A new data has been created: "${title}"`, {
       variant: 'success',
     })
 
@@ -194,7 +201,7 @@ function SaveMenu(props) {
   const onClickClearAllData = async () => {
     await schema_datas.clear()
 
-    enqueueSnackbar(`All the save data have been deleted.`, {
+    enqueueSnackbar('All your data have been deleted.', {
       variant: 'error',
     })
 
@@ -203,6 +210,16 @@ function SaveMenu(props) {
     setAnchorEl(null)
 
     fetchDatas()
+  }
+
+  const [clearDialogOpen, setClearDialogOpen] = React.useState(false)
+
+  const handleClickClearDialogOpen = () => {
+    setClearDialogOpen(true)
+  }
+
+  const handleClearDialogClose = () => {
+    setClearDialogOpen(false)
   }
 
   // for auto-saving
@@ -271,11 +288,49 @@ function SaveMenu(props) {
           Save as new
         </MenuItem>
         <Divider sx={{ my: 0.5 }} />
-        <MenuItem onClick={onClickClearAllData} disableRipple>
+        <MenuItem
+          onClick={() => {
+            handleClose()
+            handleClickClearDialogOpen()
+          }}
+          disableRipple
+        >
           <ClearAllIcon />
-          Clear all the data(dialog)
+          Clear your data
         </MenuItem>
       </StyledMenu>
+      <Dialog
+        open={clearDialogOpen}
+        onClose={handleClearDialogClose}
+        aria-labelledby="clear-dialog-title"
+        aria-describedby="clear-dialog-description"
+      >
+        <DialogTitle id="clear-dialog-title">
+          <Typography component="div" variant="h5" display="flex" alignItems="center">
+            <WarningIcon sx={{ color: 'warning.main' }} />
+            <Box ml={1}>Clear your data</Box>
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="clear-dialog-description">
+            This action cannot be undone. Are you sure you want to delete all your data?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClearDialogClose} autoFocus color="info">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleClearDialogClose()
+              onClickClearAllData()
+            }}
+            color="error"
+          >
+            Clear
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
@@ -424,7 +479,7 @@ const Storage = (props) => {
                   onClick={async () => {
                     await schema_datas.delete(data.id)
                     enqueueSnackbar(
-                      `The save data "${data.title}" has been deleted.`,
+                      `The data "${data.title}" has been deleted.`,
                       {
                         variant: 'error',
                       }
