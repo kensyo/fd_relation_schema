@@ -306,7 +306,12 @@ function SaveMenu(props) {
         aria-describedby="clear-dialog-description"
       >
         <DialogTitle id="clear-dialog-title">
-          <Typography component="div" variant="h5" display="flex" alignItems="center">
+          <Typography
+            component="div"
+            variant="h5"
+            display="flex"
+            alignItems="center"
+          >
             <WarningIcon sx={{ color: 'warning.main' }} />
             <Box ml={1}>Clear your data</Box>
           </Typography>
