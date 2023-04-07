@@ -313,7 +313,8 @@ function SaveMenu(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="clear-dialog-description">
-            This action cannot be undone. Are you sure you want to delete all your data?
+            Even locked data are deleted and this action cannot be undone. Are
+            you sure you want to delete all your data?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
