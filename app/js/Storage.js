@@ -14,6 +14,7 @@ import {
   MenuItem,
   Switch,
   TextField,
+  Tooltip,
 } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import SaveAsIcon from '@mui/icons-material/SaveAs'
@@ -166,9 +167,7 @@ function SaveMenu(props) {
       attributes: getNormalizedAttiributes(attributes),
       fds,
       title: currentDataID
-        ? "🔁 " + (
-          await schema_datas.get(currentDataID)
-        ).title
+        ? '🔁 ' + (await schema_datas.get(currentDataID)).title
         : 'A New Schema',
       isLocked,
     })
@@ -462,14 +461,21 @@ const Storage = (props) => {
                   }}
                 />
               ) : (
-                <ListItemText
-                  primary={data.title || 'No Title'}
-                  primaryTypographyProps={{
-                    width: 'calc(100% - 32px)',
-                    noWrap: true,
-                    color: data.title ? 'text.primary' : 'text.disabled',
-                  }}
-                />
+                <Tooltip
+                  title={data.title}
+                  placement="right-start"
+                  enterDelay={500}
+                  enterNextDelay={500}
+                >
+                  <ListItemText
+                    primary={data.title || 'No Title'}
+                    primaryTypographyProps={{
+                      width: 'calc(100% - 32px)',
+                      noWrap: true,
+                      color: data.title ? 'text.primary' : 'text.disabled',
+                    }}
+                  />
+                </Tooltip>
               )}
             </ListItemButton>
           </ListItem>
