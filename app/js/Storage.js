@@ -28,6 +28,7 @@ import { styled, alpha } from '@mui/material/styles'
 import database from './idbloader'
 import { v4 as uuidv4 } from 'uuid'
 import config from '../config.json'
+import { enqueueSnackbar } from 'notistack'
 
 const schema_datas = database.getObjectstore('schema_datas')
 
@@ -117,13 +118,18 @@ function SaveMenu(props) {
     const name = ''
     const attributes = []
     const fds = [[[], [], uuidv4()]]
+    const title = 'A New Schema'
 
     const id = await schema_datas.add({
       name,
       attributes,
       fds,
-      title: 'A New Schema',
+      title,
       isLocked: false,
+    })
+
+    enqueueSnackbar(`A new save data has been created: "${title}"`, {
+      variant: 'success',
     })
 
     dispatch({ type: 'name_change', value: name })
@@ -162,14 +168,20 @@ function SaveMenu(props) {
   }
 
   const onClickSaveAsNew = async () => {
+    const title = currentDataID
+      ? '🔁 ' + (await schema_datas.get(currentDataID)).title
+      : name
+
     const id = await schema_datas.add({
       name,
       attributes: getNormalizedAttiributes(attributes),
       fds,
-      title: currentDataID
-        ? '🔁 ' + (await schema_datas.get(currentDataID)).title
-        : name,
+      title,
       isLocked,
+    })
+
+    enqueueSnackbar(`A new save data has been created: "${title}"`, {
+      variant: 'success',
     })
 
     setCurrentDataID(id)
@@ -181,6 +193,10 @@ function SaveMenu(props) {
 
   const onClickClearAllData = async () => {
     await schema_datas.clear()
+
+    enqueueSnackbar(`All the save data have been deleted.`, {
+      variant: 'error',
+    })
 
     setCurrentDataID(null)
 
@@ -407,6 +423,12 @@ const Storage = (props) => {
                   aria-label="delete"
                   onClick={async () => {
                     await schema_datas.delete(data.id)
+                    enqueueSnackbar(
+                      `The save data "${data.title}" has been deleted.`,
+                      {
+                        variant: 'error',
+                      }
+                    )
 
                     if (currentDataID === data.id) {
                       setCurrentDataID(null)
