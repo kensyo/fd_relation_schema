@@ -16,6 +16,7 @@ export default (props) => {
   const dispatch = props.dispatch
   const options = props.options
   const placeholders = props.placeholders
+  const isLocked = props.isLocked
 
   const indexPlus1 = index + 1
 
@@ -49,6 +50,7 @@ export default (props) => {
   ) => {
     return (
       <Autocomplete
+        disabled={isLocked}
         multiple
         filterSelectedOptions
         isOptionEqualToValue={(option, value) => {
@@ -112,11 +114,13 @@ export default (props) => {
           )}
         </Grid>
         <Grid item xs="auto">
-          <Tooltip title="Remove the FD">
-            <IconButton onClick={handleClick}>
-              <DeleteForeverIcon color="error" />
-            </IconButton>
-          </Tooltip>
+          <IconButton onClick={handleClick} disabled={isLocked}>
+            <Tooltip title="Remove the FD">
+              <DeleteForeverIcon
+                color={isLocked ? 'theme.palette.primary.disabled' : 'error'}
+              />
+            </Tooltip>
+          </IconButton>
         </Grid>
       </Grid>
     </Box>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Autocomplete, Chip, TextField } from '@mui/material'
+import { alpha, Autocomplete, Chip, TextField } from '@mui/material'
 import { v4 } from 'uuid'
 
 const createOption = (label) => ({
@@ -14,6 +14,7 @@ export default (props) => {
   const dispatch = props.dispatch
   const [inputValue, setInputValue] = React.useState('')
   const fds = props.fds
+  const isLocked = props.isLocked
 
   const setValue = (newValue) => {
     dispatch({ type: 'attributes_change', value: newValue })
@@ -106,6 +107,7 @@ export default (props) => {
   return (
     <Autocomplete
       onKeyDown={handleKeyDown}
+      disabled={isLocked}
       onBlur={() => setInputValue('')}
       multiple
       id="tags-filled"
@@ -141,7 +143,8 @@ export default (props) => {
       renderTags={(value, getTagProps) =>
         value.map((option, index) => (
           <Chip
-            style={{
+            disabled={isLocked}
+            style={isLocked ? {} : {
               transition: option.isDuplicated ? '0.15s' : '0.0s',
               opacity: option.isDuplicated ? 0 : 1,
             }}

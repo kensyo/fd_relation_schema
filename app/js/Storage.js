@@ -89,6 +89,7 @@ function SaveMenu(props) {
     name,
     attributes,
     fds,
+    isLocked,
     currentDataID,
     setCurrentDataID,
     fetchDatas,
@@ -121,6 +122,7 @@ function SaveMenu(props) {
       attributes,
       fds,
       title: 'A New Schema',
+      isLocked: false,
     })
 
     dispatch({ type: 'name_change', value: name })
@@ -150,6 +152,7 @@ function SaveMenu(props) {
       attributes: getNormalizedAttiributes(attributes),
       fds,
       title,
+      isLocked,
     })
 
     setAnchorEl(null)
@@ -166,7 +169,8 @@ function SaveMenu(props) {
         ? (
           await schema_datas.get(currentDataID)
         ).title
-        : "A New Schema",
+        : 'A New Schema',
+      isLocked,
     })
 
     setCurrentDataID(id)
@@ -286,7 +290,7 @@ const StyledFocusedTextField = styled(FocusedTextField)`
 `
 
 const Storage = (props) => {
-  const { name, attributes, fds, dispatch } = props
+  const { name, attributes, fds, isLocked, dispatch } = props
 
   const [currentDataID, setCurrentDataID] = useState(null)
   const [datas, setDatas] = useState([])
@@ -345,7 +349,26 @@ const Storage = (props) => {
             labelPlacement="end"
           />
           <FormControlLabel
-            control={<Switch color="primary" />}
+            disabled={currentDataID ? false : true}
+            control={
+              <Switch
+                color="secondary"
+                checked={isLocked}
+                onClick={async (event) => {
+                  const checked = event.target.checked
+                  dispatch({
+                    type: 'isLocked_change',
+                    value: checked,
+                  })
+                  const data = await schema_datas.get(currentDataID)
+                  await schema_datas.update({
+                    ...data,
+                    isLocked: checked,
+                  })
+                  fetchDatas()
+                }}
+              />
+            }
             label="Lock"
             labelPlacement="end"
           />
@@ -355,6 +378,7 @@ const Storage = (props) => {
         name={name}
         attributes={attributes}
         fds={fds}
+        isLocked={isLocked}
         dispatch={dispatch}
         currentDataID={currentDataID}
         setCurrentDataID={setCurrentDataID}
@@ -379,6 +403,7 @@ const Storage = (props) => {
                   <EditIcon />
                 </IconButton>
                 <IconButton
+                  disabled={data.isLocked}
                   edge="end"
                   aria-label="delete"
                   onClick={async () => {
@@ -406,6 +431,10 @@ const Storage = (props) => {
                   value: schema_data.attributes,
                 })
                 dispatch({ type: 'fds_change', value: schema_data.fds })
+                dispatch({
+                  type: 'isLocked_change',
+                  value: schema_data.isLocked,
+                })
                 setCurrentDataID(data.id)
               }}
             >

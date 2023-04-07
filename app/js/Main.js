@@ -40,18 +40,25 @@ function reducer(state, action) {
         fds: action.value,
       }
 
+    case 'isLocked_change':
+      return {
+        ...state,
+        isLocked: action.value,
+      }
+
     default:
-      throw new Error('machigai')
+      throw new Error('No such dispatch action: ' + action.type)
   }
 }
 
 export default () => {
-  const [{ name, attributes, fds }, dispatch] = useReducer(reducer, {
+  const [{ name, attributes, fds, isLocked }, dispatch] = useReducer(reducer, {
     name: '',
     attributes: [],
     fds: [
       [[], [], uuidv4()], // [LHSarray, RHSarray, uuid]
     ],
+    isLocked: false,
   })
 
   const handleClick = () => {
@@ -70,6 +77,7 @@ export default () => {
             name={name}
             attributes={attributes}
             fds={fds}
+            isLocked={isLocked}
             dispatch={dispatch}
           />
         </Grid>
@@ -88,6 +96,7 @@ export default () => {
               <Name
                 placeholder={shouldPutPlaceholder ? 'example: vegetables' : ''}
                 value={name}
+                isLocked={isLocked}
                 dispatch={dispatch}
               />
               <Attributes
@@ -97,6 +106,7 @@ export default () => {
                     : ''
                 }
                 value={attributes}
+                isLocked={isLocked}
                 dispatch={dispatch}
                 fds={fds}
               />
@@ -115,10 +125,12 @@ export default () => {
                     dispatch={dispatch}
                     index={index}
                     fds={fds}
+                    isLocked={isLocked}
                   />
                 ))}
                 <Button
                   variant="contained"
+                  disabled={isLocked}
                   onClick={handleClick}
                   sx={{ width: 160 }}
                 >

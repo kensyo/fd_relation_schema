@@ -9,6 +9,7 @@ const Name = (props) => {
         onChange={(event) => {
           props.dispatch({ type: 'name_change', value: event.target.value })
         }}
+        disabled={props.isLocked}
         fullWidth
         size="small"
         InputLabelProps={{ shrink: true }}
