@@ -206,6 +206,10 @@ function SaveMenu(props) {
     })
 
     setCurrentDataID(null)
+    dispatch({
+      type: 'isLocked_change',
+      value: false,
+    })
 
     setAnchorEl(null)
 
@@ -493,6 +497,10 @@ const Storage = (props) => {
 
                     if (currentDataID === data.id) {
                       setCurrentDataID(null)
+                      dispatch({
+                        type: 'isLocked_change',
+                        value: false,
+                      })
                     }
                     fetchDatas()
                   }}
