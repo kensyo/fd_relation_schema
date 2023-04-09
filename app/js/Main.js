@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useContext, useReducer } from 'react'
 import {
   Stack,
   Container,
@@ -6,7 +6,8 @@ import {
   Box,
   Button,
   Divider,
-  Grid,
+  Drawer,
+  Toolbar,
 } from '@mui/material'
 import Name from './Name'
 import Attributes from './Attributes'
@@ -16,6 +17,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import FDRS from '3NF_SYNTHESIS'
 import Storage from './Storage'
+import Context from './Context'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -51,7 +53,10 @@ function reducer(state, action) {
   }
 }
 
-export default () => {
+const drawerWidth = 240
+
+export default (props) => {
+  const { window } = props
   const [{ name, attributes, fds, isLocked }, dispatch] = useReducer(reducer, {
     name: '',
     attributes: [],
@@ -69,85 +74,132 @@ export default () => {
 
   const shouldPutPlaceholder = name === '' && attributes.length === 0
 
+  const { mobileOpen, setMobileOpen } = useContext(Context)
+
+  const drawer = (
+    <>
+      <Toolbar />
+      <Storage
+        name={name}
+        attributes={attributes}
+        fds={fds}
+        isLocked={isLocked}
+        dispatch={dispatch}
+      />
+    </>
+  )
+
+  const container =
+    window !== undefined ? () => window().document.body : undefined
+
   return (
-    <Container maxWidth="lg">
-      <Grid container>
-        <Grid item xs={3}>
-          <Storage
-            name={name}
-            attributes={attributes}
-            fds={fds}
+    <Container maxWidth="100%" sx={{ display: 'flex' }}>
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="save menu"
+      >
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={() => {
+            setMobileOpen(!mobileOpen)
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
+      >
+        <Toolbar />
+        <Stack spacing={2}>
+          <Typography variant="body1" gutterBottom>
+            Enter your schema information(Name, Attributes, and FDs) and choose
+            action.
+          </Typography>
+          <Name
+            placeholder={shouldPutPlaceholder ? 'example: vegetables' : ''}
+            value={name}
             isLocked={isLocked}
             dispatch={dispatch}
           />
-        </Grid>
-        <Grid item xs={9}>
-          <Box sx={{ my: 4 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-              Scrutinize and normalize fd relation schema
-            </Typography>
-
-            <Stack spacing={2}>
-              <Typography variant="body1" gutterBottom>
-                {' '}
-                Enter your schema information(Name, Attributes, and FDs) and
-                choose action.{' '}
-              </Typography>
-              <Name
-                placeholder={shouldPutPlaceholder ? 'example: vegetables' : ''}
-                value={name}
-                isLocked={isLocked}
-                dispatch={dispatch}
-              />
-              <Attributes
-                placeholder={
+          <Attributes
+            placeholder={
+              shouldPutPlaceholder
+                ? 'vegetable_name, grower, growing_area, price'
+                : ''
+            }
+            value={attributes}
+            isLocked={isLocked}
+            dispatch={dispatch}
+            fds={fds}
+          />
+          <Stack spacing={1}>
+            {fds.map((fd, index) => (
+              <FD
+                key={fd[2]}
+                placeholders={
                   shouldPutPlaceholder
-                    ? 'vegetable_name, grower, growing_area, price'
-                    : ''
+                    ? ['vegetable_name, grower', 'price']
+                    : ['', '']
                 }
-                value={attributes}
-                isLocked={isLocked}
+                options={attributes}
+                leftValue={fd[0]}
+                rightValue={fd[1]}
                 dispatch={dispatch}
+                index={index}
                 fds={fds}
+                isLocked={isLocked}
               />
-              <Stack spacing={1}>
-                {fds.map((fd, index) => (
-                  <FD
-                    key={fd[2]}
-                    placeholders={
-                      shouldPutPlaceholder
-                        ? ['vegetable_name, grower', 'price']
-                        : ['', '']
-                    }
-                    options={attributes}
-                    leftValue={fd[0]}
-                    rightValue={fd[1]}
-                    dispatch={dispatch}
-                    index={index}
-                    fds={fds}
-                    isLocked={isLocked}
-                  />
-                ))}
-                <Button
-                  variant="contained"
-                  disabled={isLocked}
-                  onClick={handleClick}
-                  sx={{ width: 160 }}
-                >
-                  Add another FD
-                </Button>
-              </Stack>
+            ))}
+            <Button
+              variant="contained"
+              disabled={isLocked}
+              onClick={handleClick}
+              sx={{ width: 160 }}
+            >
+              Add another FD
+            </Button>
+          </Stack>
 
-              <Divider variant="middle" />
+          <Divider variant="middle" />
 
-              <Box sx={{ flexGrow: 2 }}>
-                <Action name={name} attributesRaw={attributes} fdsRaw={fds} />
-              </Box>
-              <Divider variant="middle" />
-            </Stack>
+          <Box sx={{ flexGrow: 2 }}>
+            <Action name={name} attributesRaw={attributes} fdsRaw={fds} />
           </Box>
-        </Grid>
-      </Grid>
+          <Divider variant="middle" />
+        </Stack>
+      </Box>
     </Container>
   )
 }

@@ -1,4 +1,5 @@
 import {
+  AppBar,
   Box,
   Button,
   Dialog,
@@ -408,170 +409,184 @@ const Storage = (props) => {
   }, [])
 
   return (
-    <Box sx={{ m: 4 }}>
-      <FormControl component="fieldset">
-        <FormGroup aria-label="editing-option">
-          <FormControlLabel
-            control={
-              <Switch
-                color="primary"
-                checked={autoSave}
-                onClick={(event) => {
-                  setAutoSave(event.target.checked)
-                  localStorage.setItem(
-                    config.localstorage_key_for_autosave,
-                    `${event.target.checked}`
-                  )
-                }}
-              />
-            }
-            label="Auto-Save"
-            labelPlacement="end"
-          />
-          <FormControlLabel
-            disabled={currentDataID ? false : true}
-            control={
-              <Switch
-                color="secondary"
-                checked={isLocked}
-                onClick={async (event) => {
-                  const checked = event.target.checked
-                  dispatch({
-                    type: 'isLocked_change',
-                    value: checked,
-                  })
-                  const data = await schema_datas.get(currentDataID)
-                  await schema_datas.update({
-                    ...data,
-                    isLocked: checked,
-                  })
-                  fetchDatas()
-                }}
-              />
-            }
-            label="Lock"
-            labelPlacement="end"
-          />
-        </FormGroup>
-      </FormControl>
-      <SaveMenu
-        name={name}
-        attributes={attributes}
-        fds={fds}
-        isLocked={isLocked}
-        dispatch={dispatch}
-        currentDataID={currentDataID}
-        setCurrentDataID={setCurrentDataID}
-        fetchDatas={fetchDatas}
-        autoSave={autoSave}
-      />
-      <List>
-        {datas.map((data) => (
-          <ListItem
-            key={data.id}
-            disablePadding
-            secondaryAction={
-              <>
-                <IconButton
-                  edge="end"
-                  aria-label="edit"
-                  onClick={async () => {
-                    setEditingID(data.id)
-                    setEditingText(data.title)
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  disabled={data.isLocked}
-                  edge="end"
-                  aria-label="delete"
-                  onClick={async () => {
-                    await schema_datas.delete(data.id)
-                    enqueueSnackbar(
-                      `The data "${data.title}" has been deleted.`,
-                      {
-                        variant: 'error',
-                      }
+    <Box
+      sx={{
+        m: 0,
+        p: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
+      <Box sx={{ mx: 2, my: 1 }}>
+        <FormControl component="fieldset">
+          <FormGroup aria-label="editing-option">
+            <FormControlLabel
+              control={
+                <Switch
+                  color="primary"
+                  checked={autoSave}
+                  onClick={(event) => {
+                    setAutoSave(event.target.checked)
+                    localStorage.setItem(
+                      config.localstorage_key_for_autosave,
+                      `${event.target.checked}`
                     )
-
-                    if (currentDataID === data.id) {
-                      setCurrentDataID(null)
-                      dispatch({
-                        type: 'isLocked_change',
-                        value: false,
-                      })
-                    }
-                    fetchDatas()
-                  }}
-                >
-                  <DeleteForeverIcon />
-                </IconButton>
-              </>
-            }
-          >
-            <ListItemButton
-              sx={{ height: '48px' }}
-              selected={data.id === currentDataID}
-              onClick={async () => {
-                const schema_data = await schema_datas.get(data.id)
-                dispatch({ type: 'name_change', value: schema_data.name })
-                dispatch({
-                  type: 'attributes_change',
-                  value: schema_data.attributes,
-                })
-                dispatch({ type: 'fds_change', value: schema_data.fds })
-                dispatch({
-                  type: 'isLocked_change',
-                  value: schema_data.isLocked,
-                })
-                setCurrentDataID(data.id)
-              }}
-            >
-              {data.id === editingID ? (
-                <StyledFocusedTextField
-                  sx={{ width: 'calc(100% - 32px)' }}
-                  value={editingText}
-                  onChange={(event) => {
-                    setEditingText(event.target.value)
-                  }}
-                  onKeyPress={(event) => {
-                    if (event.key === 'Enter') {
-                      event.target.blur()
-                    }
-                  }}
-                  size="small"
-                  onBlur={async (event) => {
-                    await schema_datas.update({
-                      ...data,
-                      title: event.target.value,
-                    })
-                    fetchDatas()
-                    setEditingText('')
-                    setEditingID(null)
                   }}
                 />
-              ) : (
-                <Tooltip
-                  title={data.title}
-                  placement="right-start"
-                  enterDelay={500}
-                  enterNextDelay={500}
-                >
-                  <ListItemText
-                    primary={data.title || 'No Title'}
-                    primaryTypographyProps={{
-                      width: 'calc(100% - 32px)',
-                      noWrap: true,
-                      color: data.title ? 'text.primary' : 'text.disabled',
+              }
+              label="Auto-Save"
+              labelPlacement="end"
+            />
+            <FormControlLabel
+              disabled={currentDataID ? false : true}
+              control={
+                <Switch
+                  color="secondary"
+                  checked={isLocked}
+                  onClick={async (event) => {
+                    const checked = event.target.checked
+                    dispatch({
+                      type: 'isLocked_change',
+                      value: checked,
+                    })
+                    const data = await schema_datas.get(currentDataID)
+                    await schema_datas.update({
+                      ...data,
+                      isLocked: checked,
+                    })
+                    fetchDatas()
+                  }}
+                />
+              }
+              label="Lock"
+              labelPlacement="end"
+            />
+          </FormGroup>
+        </FormControl>
+        <SaveMenu
+          name={name}
+          attributes={attributes}
+          fds={fds}
+          isLocked={isLocked}
+          dispatch={dispatch}
+          currentDataID={currentDataID}
+          setCurrentDataID={setCurrentDataID}
+          fetchDatas={fetchDatas}
+          autoSave={autoSave}
+        />
+      </Box>
+      <Box sx={{ overflowY: 'auto', flexGrow: 1 }}>
+        <Divider sx={{ mp: 2 }} />
+        <List disablePadding sx={{ mx: 2, my: 1 }}>
+          {datas.map((data) => (
+            <ListItem
+              key={data.id}
+              disablePadding
+              secondaryAction={
+                <>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={async () => {
+                      setEditingID(data.id)
+                      setEditingText(data.title)
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    disabled={data.isLocked}
+                    edge="end"
+                    aria-label="delete"
+                    onClick={async () => {
+                      await schema_datas.delete(data.id)
+                      enqueueSnackbar(
+                        `The data "${data.title}" has been deleted.`,
+                        {
+                          variant: 'error',
+                        }
+                      )
+
+                      if (currentDataID === data.id) {
+                        setCurrentDataID(null)
+                        dispatch({
+                          type: 'isLocked_change',
+                          value: false,
+                        })
+                      }
+                      fetchDatas()
+                    }}
+                  >
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </>
+              }
+            >
+              <ListItemButton
+                sx={{ height: '48px' }}
+                selected={data.id === currentDataID}
+                onClick={async () => {
+                  const schema_data = await schema_datas.get(data.id)
+                  dispatch({ type: 'name_change', value: schema_data.name })
+                  dispatch({
+                    type: 'attributes_change',
+                    value: schema_data.attributes,
+                  })
+                  dispatch({ type: 'fds_change', value: schema_data.fds })
+                  dispatch({
+                    type: 'isLocked_change',
+                    value: schema_data.isLocked,
+                  })
+                  setCurrentDataID(data.id)
+                }}
+              >
+                {data.id === editingID ? (
+                  <StyledFocusedTextField
+                    sx={{ width: 'calc(100% - 32px)' }}
+                    value={editingText}
+                    onChange={(event) => {
+                      setEditingText(event.target.value)
+                    }}
+                    onKeyPress={(event) => {
+                      if (event.key === 'Enter') {
+                        event.target.blur()
+                      }
+                    }}
+                    size="small"
+                    onBlur={async (event) => {
+                      await schema_datas.update({
+                        ...data,
+                        title: event.target.value,
+                      })
+                      fetchDatas()
+                      setEditingText('')
+                      setEditingID(null)
                     }}
                   />
-                </Tooltip>
-              )}
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+                ) : (
+                  <Tooltip
+                    title={data.title}
+                    placement="right-start"
+                    enterDelay={500}
+                    enterNextDelay={500}
+                  >
+                    <ListItemText
+                      primary={data.title || 'No Title'}
+                      primaryTypographyProps={{
+                        width: 'calc(100% - 32px)',
+                        noWrap: true,
+                        color: data.title ? 'text.primary' : 'text.disabled',
+                      }}
+                    />
+                  </Tooltip>
+                )}
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </Box>
   )
 }
