@@ -143,64 +143,66 @@ export default (props) => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <Toolbar />
-        <Stack spacing={2}>
-          <Typography variant="body1" gutterBottom>
-            Enter your schema information(Name, Attributes, and FDs) and choose
-            action.
-          </Typography>
-          <Name
-            placeholder={shouldPutPlaceholder ? 'example: vegetables' : ''}
-            value={name}
-            isLocked={isLocked}
-            dispatch={dispatch}
-          />
-          <Attributes
-            placeholder={
-              shouldPutPlaceholder
-                ? 'vegetable_name, grower, growing_area, price'
-                : ''
-            }
-            value={attributes}
-            isLocked={isLocked}
-            dispatch={dispatch}
-            fds={fds}
-          />
-          <Stack spacing={1}>
-            {fds.map((fd, index) => (
-              <FD
-                key={fd[2]}
-                placeholders={
-                  shouldPutPlaceholder
-                    ? ['vegetable_name, grower', 'price']
-                    : ['', '']
-                }
-                options={attributes}
-                leftValue={fd[0]}
-                rightValue={fd[1]}
-                dispatch={dispatch}
-                index={index}
-                fds={fds}
-                isLocked={isLocked}
-              />
-            ))}
-            <Button
-              variant="contained"
-              disabled={isLocked}
-              onClick={handleClick}
-              sx={{ width: 160 }}
-            >
-              Add another FD
-            </Button>
+        <Container maxWidth="md">
+          <Toolbar />
+          <Stack spacing={2}>
+            <Typography variant="body1" gutterBottom>
+              Enter your schema information(Name, Attributes, and FDs) and
+              choose action.
+            </Typography>
+            <Name
+              placeholder={shouldPutPlaceholder ? 'example: vegetables' : ''}
+              value={name}
+              isLocked={isLocked}
+              dispatch={dispatch}
+            />
+            <Attributes
+              placeholder={
+                shouldPutPlaceholder
+                  ? 'vegetable_name, grower, growing_area, price'
+                  : ''
+              }
+              value={attributes}
+              isLocked={isLocked}
+              dispatch={dispatch}
+              fds={fds}
+            />
+            <Stack spacing={1}>
+              {fds.map((fd, index) => (
+                <FD
+                  key={fd[2]}
+                  placeholders={
+                    shouldPutPlaceholder
+                      ? ['vegetable_name, grower', 'price']
+                      : ['', '']
+                  }
+                  options={attributes}
+                  leftValue={fd[0]}
+                  rightValue={fd[1]}
+                  dispatch={dispatch}
+                  index={index}
+                  fds={fds}
+                  isLocked={isLocked}
+                />
+              ))}
+              <Button
+                variant="contained"
+                disabled={isLocked}
+                onClick={handleClick}
+                sx={{ width: 160 }}
+              >
+                Add another FD
+              </Button>
+            </Stack>
+
+            <Divider variant="middle" />
+
+            <Box sx={{ flexGrow: 2 }}>
+              <Action name={name} attributesRaw={attributes} fdsRaw={fds} />
+            </Box>
+            <Divider variant="middle" />
           </Stack>
-
-          <Divider variant="middle" />
-
-          <Box sx={{ flexGrow: 2 }}>
-            <Action name={name} attributesRaw={attributes} fdsRaw={fds} />
-          </Box>
-          <Divider variant="middle" />
-        </Stack>
+        </Container>
       </Box>
     </Container>
   )
