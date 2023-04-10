@@ -139,11 +139,10 @@ export default (props) => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <Container maxWidth="md">
+        <Container maxWidth="md" sx={{ py: 2 }}>
           <Toolbar />
           <Stack spacing={2}>
             <Typography variant="body1" gutterBottom>
