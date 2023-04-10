@@ -18,6 +18,7 @@ import { v4 as uuidv4 } from 'uuid'
 import FDRS from '3NF_SYNTHESIS'
 import Storage from './Storage'
 import Context from './Context'
+import useCurrentBreakpoint from './hooks/useCurrentBreakpoint'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -99,39 +100,40 @@ export default (props) => {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="save menu"
       >
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={() => {
-            setMobileOpen(!mobileOpen)
-          }}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
+        {'xs' === useCurrentBreakpoint() ? (
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={() => {
+              setMobileOpen(!mobileOpen)
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+        ) : (
+          <Drawer
+            variant="permanent"
+            sx={{
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+              },
+            }}
+            open
+          >
+            {drawer}
+          </Drawer>
+        )}
       </Box>
       <Box
         component="main"

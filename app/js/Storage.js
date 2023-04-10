@@ -227,8 +227,14 @@ function SaveMenu(props) {
     setClearDialogOpen(false)
   }
 
+  const [mounted, setMounted] = useState(false)
   // for auto-saving
   useEffect(() => {
+    if (!mounted) {
+      setMounted(true)
+      return
+    }
+
     if (!autoSave) {
       return
     }
