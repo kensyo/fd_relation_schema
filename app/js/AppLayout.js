@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 import Header from './Header'
 import Main from './Main'
-import Footer from './Footer'
 import Context from './Context'
+import ConsentBanner from './ConsentBanner'
 
 export default (_props) => {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -12,7 +12,7 @@ export default (_props) => {
     <Context.Provider value={{ mobileOpen, setMobileOpen }}>
       <Header />
       <Main />
-      <Footer />
+      <ConsentBanner />
     </Context.Provider>
   )
 }

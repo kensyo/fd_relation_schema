@@ -19,6 +19,7 @@ import FDRS from '3NF_SYNTHESIS'
 import Storage from './Storage'
 import Context from './Context'
 import useCurrentBreakpoint from './hooks/useCurrentBreakpoint'
+import Footer from './Footer'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -136,13 +137,12 @@ export default (props) => {
         )}
       </Box>
       <Box
-        component="main"
         sx={{
           flexGrow: 1,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <Container maxWidth="md" sx={{ py: 2 }}>
+        <Container maxWidth="md" sx={{ py: 2 }} component="main">
           <Toolbar />
           <Stack spacing={2}>
             <Typography variant="body1" gutterBottom>
@@ -202,6 +202,7 @@ export default (props) => {
             <Divider variant="middle" />
           </Stack>
         </Container>
+        <Footer />
       </Box>
     </Container>
   )

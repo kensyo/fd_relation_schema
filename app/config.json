@@ -1,3 +1,7 @@
 {
-  "localstorage_key_for_autosave": "fd_relation_shema_auto-save"
+  "localstorage_key_for_autosave": "fd_relation_shema_auto-save",
+  "cookie_consent": {
+    "key": "cookie_consent",
+    "expiration_days": 30
+  }
 }
