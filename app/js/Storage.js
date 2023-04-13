@@ -287,7 +287,13 @@ function SaveMenu(props) {
         </MenuItem>
         <Divider sx={{ my: 0.5 }} />
         <MenuItem
-          onClick={onClickSave}
+          onClick={async () => {
+            const title = (await schema_datas.get(currentDataID)).title
+            enqueueSnackbar(`The data "${title}" has been saved.`, {
+              variant: 'info',
+            })
+            onClickSave()
+          }}
           disableRipple
           disabled={currentDataID ? false : true}
         >
