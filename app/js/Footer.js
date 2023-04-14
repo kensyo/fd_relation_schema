@@ -13,15 +13,12 @@ import {
 } from '@mui/material'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import CloseIcon from '@mui/icons-material/Close'
-import config from '../config.json'
-
-const cookie_consent = config.cookie_consent
+import Context from './Context'
 
 export default function () {
   const [cookieDialogOpen, setCookieDialogOpen] = React.useState(false)
-  const [cookieConsent, setCookieConsent] = React.useState(() => {
-    return window.checkCookieConsent()
-  })
+  const { cookieConsent, handleAcceptCookies, handleRefuseCookies } =
+    React.useContext(Context)
 
   return (
     <footer>
@@ -78,12 +75,11 @@ export default function () {
                   checked={cookieConsent}
                   onClick={(event) => {
                     const value = event.target.checked
-                    setCookieConsent(value)
-                    window.setCookie(
-                      cookie_consent.key,
-                      String(value),
-                      cookie_consent.expiration_days
-                    )
+                    if (value) {
+                      handleAcceptCookies()
+                    } else {
+                      handleRefuseCookies()
+                    }
                   }}
                 />
                 <Typography>allow</Typography>

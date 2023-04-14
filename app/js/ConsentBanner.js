@@ -1,50 +1,9 @@
 import { Button, Grid, Snackbar } from '@mui/material'
-import React, { useState } from 'react'
-import config from '../config.json'
-
-const cookie_consent = config.cookie_consent
+import React, { useContext } from 'react'
+import Context from './Context'
 
 const ConsentBanner = () => {
-  const [showBanner, setShowBanner] = useState(() => {
-    const consent = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('cookie_consent='))
-
-    // if cookie_consent doesn't exist
-    if (consent === undefined) {
-      return true
-    }
-
-    const value = consent.split('=')[1]
-
-    // if cookie_consent does exist and its value is 'true' or 'false'
-    if (value === 'true' || value === 'false') {
-      return false
-    }
-
-    // if cookie_consent does exist and its value is invalid
-    return true
-  })
-
-  const handleAcceptCookies = () => {
-    window.setCookie(
-      cookie_consent.key,
-      'true',
-      cookie_consent.expiration_days
-    ) // Set consent cookie to expire in 30 days
-    window.loadGoogleAnalytics()
-    window.gtag('config', 'G-MJN1642ZBW', { anonymize_ip: true })
-    setShowBanner(false)
-  }
-
-  const handleRefuseCookies = () => {
-    window.setCookie(
-      cookie_consent.key,
-      'false',
-      cookie_consent.expiration_days
-    ) // Set consent cookie to expire in 30 days
-    setShowBanner(false)
-  }
+  const {showBanner, handleRefuseCookies, handleAcceptCookies} = useContext(Context)
 
   return (
     <>
