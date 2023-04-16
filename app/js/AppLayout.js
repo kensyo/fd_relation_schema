@@ -20,14 +20,6 @@ function checkCookieConsent() {
 }
 
 export default (_props) => {
-  useEffect(() => {
-    if (checkCookieConsent()) {
-      ga.enableGoogleAnalytics()
-    } else {
-      ga.disableGoogleAnalytics()
-    }
-  }, [])
-
   const [mobileOpen, setMobileOpen] = useState(false)
   const [cookieConsent, setCookieConsent] = React.useState(() => {
     return checkCookieConsent()
@@ -48,6 +40,14 @@ export default (_props) => {
     // if cookie_consent does exist and its value is invalid
     return true
   })
+
+  useEffect(() => {
+    if (checkCookieConsent()) {
+      ga.enableGoogleAnalytics()
+    } else {
+      ga.disableGoogleAnalytics()
+    }
+  }, [])
 
   const handleAcceptCookies = () => {
     cookie.set(cookie_consent.key, 'true', cookie_consent.expiration_days)

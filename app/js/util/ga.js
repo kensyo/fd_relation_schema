@@ -1,5 +1,7 @@
 const GA_ID = 'G-MJN1642ZBW'
 
+let initialized = false
+
 function loadGoogleAnalytics() {
   const script = document.createElement('script')
   script.async = true
@@ -8,29 +10,30 @@ function loadGoogleAnalytics() {
 }
 
 function enableGoogleAnalytics() {
-  window[`ga-disable-${GA_ID}`] = false
+  if (!initialized) {
+    loadGoogleAnalytics()
+    initialized = true
 
-  loadGoogleAnalytics()
+    // // add gtag function
+    window.dataLayer = window.dataLayer || []
+    function gtag() {
+      dataLayer.push(arguments)
+    }
+    window.gtag = gtag
 
-  // add gtag function
-  window.dataLayer = window.dataLayer || []
-  function gtag() {
-    dataLayer.push(arguments)
+    gtag('js', new Date())
+    gtag('config', GA_ID, { anonymize_ip: true })
   }
-  window.gtag = gtag
-
-  // initialize google analytics
-  gtag('js', new Date())
-  gtag('config', GA_ID, { anonymize_ip: true })
+  window[`ga-disable-${GA_ID}`] = false
 }
 
 function disableGoogleAnalytics() {
   window[`ga-disable-${GA_ID}`] = true
 
-  // delete _ga* cookies
+  // delete _ga* etc cookies
   const cookies = document.cookie.split(';')
-  const gaCookiePattern = /^_ga/
-  // const gaCookiePattern = /^_ga|^_gid|^_gat/
+  // const gaCookiePattern = /^_ga/
+  const gaCookiePattern = /^_ga|^_gid|^_gat/
   cookies.forEach((cookie) => {
     const cookieName = cookie.trim().split('=')[0]
 
