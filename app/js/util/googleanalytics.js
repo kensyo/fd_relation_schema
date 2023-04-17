@@ -38,15 +38,22 @@ function disable() {
     const cookieName = cookie.trim().split('=')[0]
 
     if (gaCookiePattern.test(cookieName)) {
-      document.cookie =
-        `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${window.location.hostname} ;path=/;` // .${window.location.hostname} means subdomain
-      document.cookie =
-        `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${window.location.hostname} ;path=/;` // .${window.location.hostname} means subdomain
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`
     }
+  })
+}
+
+function event({ eventName, category, label, value }) {
+  window.gtag('event', eventName, {
+    event_category: category,
+    event_label: JSON.stringify(label),
+    value,
   })
 }
 
 export default {
   enable,
   disable,
+  event,
 }

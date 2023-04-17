@@ -3,6 +3,7 @@ import { Autocomplete, TextField, Grid, Button, Stack } from '@mui/material'
 
 import FDRS from '3NF_SYNTHESIS'
 import Result from './Result'
+import ga from './util/googleanalytics'
 
 const options = [
   { value: 'scrutinize', label: 'Scrutinize the schema' },
@@ -70,6 +71,12 @@ export default (props) => {
 
               const schema = createSchema(name, attributesRaw, fdsRaw)
               setSchema(schema)
+
+              ga.event({
+                eventName: 'click_do_button',
+                category: 'Action',
+                label: value.value,
+              })
             }}
           >
             Do
