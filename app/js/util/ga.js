@@ -39,7 +39,9 @@ function disableGoogleAnalytics() {
 
     if (gaCookiePattern.test(cookieName)) {
       document.cookie =
-        cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+        `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${window.location.hostname} ;path=/;` // .${window.location.hostname} means subdomain
+      document.cookie =
+        `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`
     }
   })
 }
