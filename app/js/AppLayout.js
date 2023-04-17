@@ -8,7 +8,7 @@ import ConsentBanner from './ConsentBanner'
 import config from '../config.json'
 const cookie_consent = config.cookie_consent
 
-import ga from './util/ga'
+import ga from './util/googleanalytics'
 import cookie from './util/cookie'
 
 function checkCookieConsent() {
@@ -43,15 +43,15 @@ export default (_props) => {
 
   useEffect(() => {
     if (checkCookieConsent()) {
-      ga.enableGoogleAnalytics()
+      ga.enable()
     } else {
-      ga.disableGoogleAnalytics()
+      ga.disable()
     }
   }, [])
 
   const handleAcceptCookies = () => {
     cookie.set(cookie_consent.key, 'true', cookie_consent.expiration_days)
-    ga.enableGoogleAnalytics()
+    ga.enable()
 
     setShowBanner(false)
     setCookieConsent(true)
@@ -59,7 +59,7 @@ export default (_props) => {
 
   const handleRefuseCookies = () => {
     cookie.set(cookie_consent.key, 'false', cookie_consent.expiration_days)
-    ga.disableGoogleAnalytics()
+    ga.disable()
 
     setShowBanner(false)
     setCookieConsent(false)

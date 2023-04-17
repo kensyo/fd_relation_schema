@@ -2,16 +2,16 @@ const GA_ID = 'G-MJN1642ZBW'
 
 let initialized = false
 
-function loadGoogleAnalytics() {
+function load() {
   const script = document.createElement('script')
   script.async = true
   script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID
   document.head.appendChild(script)
 }
 
-function enableGoogleAnalytics() {
+function enable() {
   if (!initialized) {
-    loadGoogleAnalytics()
+    load()
     initialized = true
 
     // // add gtag function
@@ -27,7 +27,7 @@ function enableGoogleAnalytics() {
   window[`ga-disable-${GA_ID}`] = false
 }
 
-function disableGoogleAnalytics() {
+function disable() {
   window[`ga-disable-${GA_ID}`] = true
 
   // delete _ga* etc cookies
@@ -47,6 +47,6 @@ function disableGoogleAnalytics() {
 }
 
 export default {
-  enableGoogleAnalytics,
-  disableGoogleAnalytics,
+  enable,
+  disable,
 }
