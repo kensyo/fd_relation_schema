@@ -22,7 +22,7 @@ function enableGoogleAnalytics() {
     window.gtag = gtag
 
     gtag('js', new Date())
-    gtag('config', GA_ID, { anonymize_ip: true })
+    gtag('config', GA_ID)
   }
   window[`ga-disable-${GA_ID}`] = false
 }
