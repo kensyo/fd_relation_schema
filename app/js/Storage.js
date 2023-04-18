@@ -146,6 +146,10 @@ function SaveMenu(props) {
       value: attributes,
     })
     dispatch({ type: 'fds_change', value: fds })
+    dispatch({
+      type: 'isLocked_change',
+      value: false,
+    })
 
     setCurrentDataID(id)
 
