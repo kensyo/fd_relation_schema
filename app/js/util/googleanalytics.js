@@ -45,6 +45,9 @@ function disable() {
 }
 
 function event({ eventName, category, label, value }) {
+  if (!initialized) {
+    return
+  }
   window.gtag('event', eventName, {
     event_category: category,
     event_label: JSON.stringify(label),
