@@ -14,6 +14,7 @@ import {
 import GitHubIcon from '@mui/icons-material/GitHub'
 import CloseIcon from '@mui/icons-material/Close'
 import Context from './Context'
+import PrivacyPolicy from './PrivacyPolicy'
 
 export default function () {
   const [cookieDialogOpen, setCookieDialogOpen] = React.useState(false)
@@ -23,6 +24,7 @@ export default function () {
   return (
     <footer>
       <Stack spacing={1} alignItems="center" justifyContent="center">
+        <PrivacyPolicy />
         <Typography
           onClick={() => {
             setCookieDialogOpen(true)
