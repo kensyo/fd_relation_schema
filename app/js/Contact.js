@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -41,7 +42,8 @@ const Contact = () => {
         <DialogContent>
           <DialogContentText id="contact-dialog-description">
             If you have any questions, you can contact us via github issue.
-            <br />
+          </DialogContentText>
+          <Box sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
             <Link
               href="https://github.com/kensyo/fd-relation-schema/issues"
               target="_blank"
@@ -50,7 +52,7 @@ const Contact = () => {
             >
               https://github.com/kensyo/fd-relation-schema/issues
             </Link>
-          </DialogContentText>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
