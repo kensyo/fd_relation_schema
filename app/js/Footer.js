@@ -11,7 +11,6 @@ import {
   Switch,
   Typography,
 } from '@mui/material'
-import GitHubIcon from '@mui/icons-material/GitHub'
 import CloseIcon from '@mui/icons-material/Close'
 import Context from './Context'
 import PrivacyPolicy from './PrivacyPolicy'
@@ -91,15 +90,6 @@ export default function () {
             </Box>
           </DialogContent>
         </Dialog>
-        <Typography>
-          <Chip
-            icon={<GitHubIcon />}
-            label="Core"
-            clickable
-            component="a"
-            href="https://github.com/kensyo/3NF_SYNTHESIS"
-          />
-        </Typography>
       </Stack>
     </footer>
   )
