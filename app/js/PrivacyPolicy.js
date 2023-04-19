@@ -40,13 +40,13 @@ export default function () {
         open={open}
         onClose={handleClose}
         scroll={'paper'}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
+        aria-labelledby="privacy-policy-dialog-title"
+        aria-describedby="privacy-policy-dialog-description"
       >
-        <DialogTitle id="scroll-dialog-title">Privacy Policy</DialogTitle>
+        <DialogTitle id="privacy-policy-dialog-title">Privacy Policy</DialogTitle>
         <DialogContent dividers>
           <List
-            id="scroll-dialog-description"
+            id="privacy-policy-dialog-description"
             ref={descriptionElementRef}
             tabIndex={-1}
           >
