@@ -1,7 +1,9 @@
 import * as React from 'react'
 import {
   Box,
+  Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -38,20 +40,20 @@ export default function () {
       >
         <DialogTitle id="cookie-dialog-title">
           Cookie Settings
-          <IconButton
-            aria-label="close"
-            onClick={() => {
-              setCookieDialogOpen(false)
-            }}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
+          {/* <IconButton */}
+          {/*   aria-label="close" */}
+          {/*   onClick={() => { */}
+          {/*     setCookieDialogOpen(false) */}
+          {/*   }} */}
+          {/*   sx={{ */}
+          {/*     position: 'absolute', */}
+          {/*     right: 8, */}
+          {/*     top: 8, */}
+          {/*     color: (theme) => theme.palette.grey[500], */}
+          {/*   }} */}
+          {/* > */}
+          {/*   <CloseIcon /> */}
+          {/* </IconButton> */}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="cookie-dialog-description">
@@ -83,6 +85,9 @@ export default function () {
             </Stack>
           </Box>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setCookieDialogOpen(false)}>Close</Button>
+        </DialogActions>
       </Dialog>
     </div>
   )
