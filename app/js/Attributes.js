@@ -9,6 +9,14 @@ const createOption = (label) => ({
   isDuplicated: false,
 })
 
+const isOptionEqualToValue = (option, value) => {
+  if (option.label === value.label && option.value === value.value) {
+    return true
+  } else {
+    return false
+  }
+}
+
 export default (props) => {
   const value = props.value
   const dispatch = props.dispatch
@@ -55,14 +63,14 @@ export default (props) => {
     for (const fd of fds) {
       const newLHS = []
       for (const elem of fd[0]) {
-        if (value.includes(elem)) {
+        if (value.some(item => isOptionEqualToValue(item, elem))) {
           newLHS.push(elem)
         }
       }
 
       const newRHS = []
       for (const elem of fd[1]) {
-        if (value.includes(elem)) {
+        if (value.some(item => isOptionEqualToValue(item, elem))) {
           newRHS.push(elem)
         }
       }
@@ -144,10 +152,14 @@ export default (props) => {
         value.map((option, index) => (
           <Chip
             disabled={isLocked}
-            style={isLocked ? {} : {
-              transition: option.isDuplicated ? '0.15s' : '0.0s',
-              opacity: option.isDuplicated ? 0 : 1,
-            }}
+            style={
+              isLocked
+                ? {}
+                : {
+                  transition: option.isDuplicated ? '0.15s' : '0.0s',
+                  opacity: option.isDuplicated ? 0 : 1,
+                }
+            }
             color="primary"
             variant="outlined"
             label={option.label}
