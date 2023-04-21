@@ -382,7 +382,7 @@ const DatabaseSchemaInfo = (props) => {
   )
 }
 
-export default (props) => {
+const Result = (props) => {
   const schema = props.schema
   const doValue = props.doValue
   let returnedComponent = <React.Fragment></React.Fragment>
@@ -433,3 +433,5 @@ export default (props) => {
 
   return returnedComponent
 }
+
+export default React.memo(Result)
