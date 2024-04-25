@@ -238,7 +238,7 @@ const renderNormality = (diagnosis) => {
   }
 
   return (
-    <SchemaInfoItem label="Normality">
+    <SchemaInfoItem label="Degree of Normalization">
       <TableContainer
         component={(props) => {
           return <Paper {...props} variant="outlined" />
